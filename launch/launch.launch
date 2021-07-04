@@ -11,6 +11,7 @@
         <param name="y" type="int" value="0"/>
         <param name="theta" type="int" value="0"/>
     </node>
+    <node pkg="jialiang_han_fulltime" type="agent_visualization" name="agent_visualization" />
     </group>
     ################ start agent node 2 ################
     <group ns = "agent_2">
@@ -19,5 +20,6 @@
         <param name="y" type="int" value="3"/>
         <param name="theta" type="int" value="0"/>
     </node>
+     <node pkg="jialiang_han_fulltime" type="agent_visualization" name="agent_visualization" />
     </group>
 </launch>
