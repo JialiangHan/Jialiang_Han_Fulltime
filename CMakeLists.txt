@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(Jialiang_Han_Fulltime)
+project(jialiang_han_fulltime)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -208,3 +208,6 @@ include_directories(
 add_executable(grid_map src/grid_map.cpp)
 add_dependencies(grid_map ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(grid_map ${catkin_LIBRARIES})
+add_executable(agent src/agent.cpp)
+target_link_libraries(agent ${catkin_LIBRARIES})
+add_dependencies(agent ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
