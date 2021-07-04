@@ -10,7 +10,7 @@ int main(int argc,char **argv){
 
     ros::init(argc, argv, "agent");
 
-    ros::NodeHandle n;
+    ros::NodeHandle n("~");
 
     int initial_position_x;
     int initial_position_y;
