@@ -12,7 +12,7 @@ int main(int argc,char **argv){
     ros::Publisher pub = n.advertise<nav_msgs::OccupancyGrid>("grid_map",1);
     nav_msgs::OccupancyGrid map;
 
-    map.header.frame_id = "map";
+    map.header.frame_id = "planner";
     map.header.stamp = ros::Time::now();
     map.info.resolution = 1; // unit is meter
     map.info.width = 10; //unit is meter
