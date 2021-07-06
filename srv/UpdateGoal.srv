@@ -1,0 +1,6 @@
+string agent_name
+int x
+int y
+int theta
+---
+vector<Point> path
