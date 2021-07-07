@@ -3,4 +3,4 @@ int x
 int y
 int theta
 ---
-vector<Point> path
+vector<Node3D*> path

@@ -3,28 +3,46 @@
 // service client: get_plan
 
 #include <ros/ros.h>
-#include <nav_msgs/OccupancyGrid.h>
+#include <visualization_msgs/Marker.h>
+#include "astar.h"
+#include "node_3d.h"
 
+using namespace planner;
 
+void convert_path_to_marker(vector<Node3D*> path, visualization_msgs::Marker marker){
+    for(int i=0, i<path.size;i++){
+        
+    }
+}
 int main(int argc,char **argv){
 
     ros::init(argc, argv, "planner");
 
     ros::NodeHandle n;
 
-    ros::Publisher pub = n.advertise<geometry_msgs::PoseStamped>("agent_feedback",1);
-    geometry_msgs::PoseStamped current_position;
+    ros::Publisher pub = n.advertise<visualization_msgs::Marker>("path",1);
+    visualization_msgs::Marker marker;
+    marker.header.frame_id = "planner";
+    marker.header.stamp = ros::Time::now();
+    marker.ns = "marker";
+    marker.id = 0;
+    marker.type =  visualization_msgs::Marker::LINE_STRIP;
+    marker.action = visualization_msgs::Marker::ADD;
+    marker.pose = current_position.pose; 
+    marker.scale.x = 1;
+    marker.color.r = 0.0f;
+    marker.color.g = 1.0f;
+    marker.color.b = 0.0f;
+    marker.color.a = 1.0; 
 
-    current_position.header.frame_id = "current_position";
-    current_position.header.stamp = ros::Time::now();
-    current_position.info.resolution = 1; // unit is meter
-    current_position.info.width = 10; //unit is meter
-    current_position.info.height = 10; //unit is meter
+    vector<Node3D*> path;
 
-
+    Node3D* solution = Astar::path_planner();
+    Astar::get_path(solution,path);
 
     while (ros::ok()){
-        pub.publish(current_position);
+        convert_path_to_marker(path,marker);
+        pub.publish(marker);
     }
 
     ros::shutdown();

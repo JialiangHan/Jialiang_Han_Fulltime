@@ -1,6 +1,6 @@
-##include "node_3d.h"
+#include "node_3d.h"
 
-using namespace Planner;
+using namespace planner;
 
 // only allow agent to go left,right, up,down
 const int Node3D::dir = 4;
@@ -9,7 +9,7 @@ const int Node3D::dy[] = {0,0,-1,1};
 const int Node3D::dtheta[] = {0,0,0,0};
 
 //create successor
-Node3D* Node3D::create_successor(cosnt int i) {
+Node3D* Node3D::create_successor(const int i) {
     int x_successor;
     int y_successor;
     int theta_successor;
