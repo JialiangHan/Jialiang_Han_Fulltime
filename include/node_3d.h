@@ -21,6 +21,7 @@ namespace Planner{
            this->predecessor = predecessor;
            this->in_openlist = false;
            this->in_closelist = false;
+           this->index = -1;
        }
        //getter methods
        float get_x() const { return x;}
@@ -29,6 +30,7 @@ namespace Planner{
        float get_cost_so_far() const { return cost_so_far;}
        float get_cost_to_go() const { return cost_to_go;}
        float get_total_cost() const { return cost_so_far + cost_to_go;}
+       int get_index() const { return index;}
        bool is_open() const { return in_openlist;}
        bool is_closed() const { return in_closelist;}
        const Node3D* get_predecessor() const { return predecessor;}
@@ -39,6 +41,7 @@ namespace Planner{
        void set_theta(const float& theta) {this->theta = theta;}
        void set_cost_so_far(const float& cost_so_far) {this->cost_so_far = cost_so_far;}
        void set_cost_to_go(const float& cost_to_go) {this->cost_to_go = cost_to_go;}
+       int set_index(int width) { this->index = y * width +x; return index;}
        // put node into openlist
        void open() {in_openlist = true; in_closelist =false;}
        // put node into closelist
@@ -70,6 +73,7 @@ namespace Planner{
        float theta;
        float cost_so_far;
        float cost_to_go;
+       int index;
        bool in_openlist;
        bool in_closelist;
        const Node3D* predecessor;
