@@ -5,21 +5,16 @@
     <node pkg="jialiang_han_fulltime" name="grid_map" type="grid_map"/>
 
     ################ start agent node 1 ################
-    <group ns = "agent_1">
-    <node pkg="jialiang_han_fulltime" type="agent" name="agent" >
+    <node pkg="jialiang_han_fulltime" type="agent" name="agent_1" >
         <param name="x" type="int" value="2"/>
         <param name="y" type="int" value="0"/>
         <param name="theta" type="int" value="0"/>
     </node>
-    <node pkg="jialiang_han_fulltime" type="agent_visualization" name="agent_visualization" />
-    </group>
+
     ################ start agent node 2 ################
-    <group ns = "agent_2">
-    <node pkg="jialiang_han_fulltime" type="agent" name="agent" >
+    <node pkg="jialiang_han_fulltime" type="agent" name="agent_2" >
         <param name="x" type="int" value="0"/>
         <param name="y" type="int" value="3"/>
         <param name="theta" type="int" value="0"/>
     </node>
-     <node pkg="jialiang_han_fulltime" type="agent_visualization" name="agent_visualization" />
-    </group>
 </launch>
