@@ -2,7 +2,7 @@
 // purpose of this server is to send goal to node planner to request a path to goal
 
 #include <ros/ros.h>
-#include <planner.h>
+#include "astar.h"
 
 bool update_goal(jialiang_han_fulltime::UpateGoal::Request &req, jialiang_han_fulltime::UpdateGoal::Response &res){
     planner planner(); 
