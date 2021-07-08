@@ -4,7 +4,7 @@
 #include <ros/ros.h>
 #include <planner.h>
 
-bool update(&req,&res){
+bool update_goal(jialiang_han_fulltime::UpateGoal::Request &req, jialiang_han_fulltime::UpdateGoal::Response &res){
     planner planner(); 
 }
 
@@ -12,7 +12,7 @@ int main(int argc, char **argv){
     ros::init(argc,argv,"update_goal_server");
     ros::NodeHandle n;
 
-    ros::ServiceServer service = n.advertiseService("update_goal",update);
+    ros::ServiceServer service = n.advertiseService("update_goal",update_goal);
     ros::spin();
 
     return 0;
