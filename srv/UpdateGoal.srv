@@ -1,6 +1,4 @@
 string agent_name
-int x
-int y
-int theta
+geometry_msgs/PoseStamped goal
 ---
-vector<Node3D*> path
+nav_msgs/Path path
