@@ -72,3 +72,40 @@ void Astar::get_path(Node3D* goal){
         current_node = current_node->get_predecessor();
     }
 }
+
+nav_msgs::Path* Astar::planning(geometry_msgs::PoseStamped& start, geometry_msgs::PoseStamped& goal, int width, int height){
+    Node3D* nodes3D = new Node3D[width * height]();
+    //convert start to node3D start
+    float x_start = start.pose.position.x;
+    float y_start = start.pose.position.y;
+    float theta_start = start.pose.position.z;
+    Node3D nstart(x_start,y_start,theta_start,0,0,nullptr);
+    //convert goal to node3D goal
+    float x_goal = goal.pose.position.x;
+    float y_goal = goal.pose.position.y;
+    float theta_goal = goal.pose.position.z;
+    const Node3D ngoal(x_goal,y_goal,theta_goal,0,0,nullptr);
+    
+    //find path
+    Node3D* solution = Astar::path_planner(nstart, ngoal, nodes3D, width, height);
+    //get path in vector form
+    Astar::get_path(solution);
+    //convert vector path into nav msgs path
+    nav_msgs::Path path;
+    if (!pathlist.empty()){
+        path.header.stamp = ros::Time::now();
+        path.header.frame_id = "planner";
+        path.poses.clear();
+        for (int i=0; i<pathlist.size(); i++){
+            geometry_msgs::Posestamped pose_stamped;
+            pose_stamped.header.stamp = ros::Time::now();
+            pose_stamped.header.frame_id = "planner";
+            pose_stamped.pose.position.x = pathlist[i].get_x();
+            pose_stamped.pose.position.y = pathlist[i].get_y();
+            pose_stamped.pose.position.z = pathlist[i].get_theta();
+            path.poses.push_back(pose_stamped);
+        }
+        return path;
+    }
+
+}
