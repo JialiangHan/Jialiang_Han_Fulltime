@@ -7,7 +7,7 @@
 using namespace planner;
 
 bool get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltime::GetPlan::Response &res){
-    res = Astar::planning(req.start, req.goal, req.width, req.height);
+    res.path = Astar::planning(req.start, req.goal, req.width, req.height);
     return true;
 }
 

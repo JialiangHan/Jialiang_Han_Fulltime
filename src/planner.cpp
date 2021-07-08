@@ -1,5 +1,6 @@
 // this file create an planner node
 // subscribler topic: agent_feedback to get current position of agent
+// subscrible grid map to get map info
 // service client: get_plan
 
 #include <ros/ros.h>
@@ -9,36 +10,40 @@
 
 using namespace planner;
 
+int width;
+int height;
+geometry_msgs::PoseStamped current_position;
+
+void map_callback(nav_msgs::OccupancyGrid msg){
+    width = msg.info.width;
+    height = msg.info.height;
+}
+
+void agent_feedback_callback(geometry_msgs::PoseStamped msg){
+    current_position = msg
+}
+
 int main(int argc,char **argv){
 
     ros::init(argc, argv, "planner");
 
     ros::NodeHandle n;
+    // subscribe map info
+    ros::Subscriber map_sub = n.subscribe("grid_map", 1, map_callback);
+    // subscribe agent current postion
+    string agent_name;
+    agent_name = atoll(argv[1]);
+    string topic_name;
+    topic_name = agent_name +“/agent_feedback";
+    ros::Subscriber agent_feedback_sub = n.subscribe("agent_feedback", 1, agent_feedback_callback);
+    //call get plan service
+    ros::ServiceClient client = n.serviceClient<jialiang_han_fulltime::GetPlan>("get_plan");
+    jialiang_han_fulltime::GetPlan srv;
+    srv.request.start = current_position;
+    srv.request.goal = atoll(argv[2]);
+    srv.request.width = width;
+    srv.request.height = height;
 
-    ros::Publisher pub = n.advertise<visualization_msgs::Marker>("path",1);
-    visualization_msgs::Marker marker;
-    marker.header.frame_id = "planner";
-    marker.header.stamp = ros::Time::now();
-    marker.ns = "marker";
-    marker.id = 0;
-    marker.type =  visualization_msgs::Marker::LINE_STRIP;
-    marker.action = visualization_msgs::Marker::ADD;
-    marker.pose = current_position.pose; 
-    marker.scale.x = 1;
-    marker.color.r = 0.0f;
-    marker.color.g = 1.0f;
-    marker.color.b = 0.0f;
-    marker.color.a = 1.0; 
-
-    vector<Node3D*> path;
-
-    Node3D* solution = Astar::path_planner();
-    Astar::get_path(solution,path);
-
-    while (ros::ok()){
-        convert_path_to_marker(path,marker);
-        pub.publish(marker);
-    }
 
     ros::shutdown();
     return 0;
