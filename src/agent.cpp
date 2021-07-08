@@ -32,7 +32,7 @@ int main(int argc,char **argv){
     visualization_msgs::Marker marker;
     marker.header.frame_id = "planner";
     marker.header.stamp = ros::Time::now();
-    marker.ns = "marker";
+    marker.ns = ros::this_node::getName();
     marker.id = 0;
     marker.type =  visualization_msgs::Marker::CYLINDER;
     marker.action = visualization_msgs::Marker::ADD;
