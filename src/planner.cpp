@@ -9,11 +9,6 @@
 
 using namespace planner;
 
-void convert_path_to_marker(vector<Node3D*> path, visualization_msgs::Marker marker){
-    for(int i=0, i<path.size;i++){
-        
-    }
-}
 int main(int argc,char **argv){
 
     ros::init(argc, argv, "planner");
