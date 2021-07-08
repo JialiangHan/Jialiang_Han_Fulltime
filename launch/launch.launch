@@ -1,0 +1,20 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+
+    ################ grid_map ################
+    <node pkg="jialiang_han_fulltime" name="grid_map" type="grid_map"/>
+
+    ################ start agent node 1 ################
+    <node pkg="jialiang_han_fulltime" type="agent" name="agent_1" >
+        <param name="x" type="int" value="2"/>
+        <param name="y" type="int" value="0"/>
+        <param name="theta" type="int" value="0"/>
+    </node>
+
+    ################ start agent node 2 ################
+    <node pkg="jialiang_han_fulltime" type="agent" name="agent_2" >
+        <param name="x" type="int" value="0"/>
+        <param name="y" type="int" value="3"/>
+        <param name="theta" type="int" value="0"/>
+    </node>
+</launch>
