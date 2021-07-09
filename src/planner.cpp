@@ -34,8 +34,9 @@ int main(int argc,char **argv){
     string agent_name;
     agent_name = atoll(argv[1]);
     string topic_name;
-    topic_name = agent_name +“/agent_feedback";
-    ros::Subscriber agent_feedback_sub = n.subscribe("agent_feedback", 1, agent_feedback_callback);
+    // get topic name of specific agent
+    topic_name = agent_name + "/agent_feedback";
+    ros::Subscriber agent_feedback_sub = n.subscribe(topic_name, 1, agent_feedback_callback);
     //call get plan service
     ros::ServiceClient client = n.serviceClient<jialiang_han_fulltime::GetPlan>("get_plan");
     jialiang_han_fulltime::GetPlan srv;
