@@ -5,6 +5,7 @@
 
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
+#include <map>
 #include "astar.h"
 #include "node_3d.h"
 
@@ -44,8 +45,23 @@ int main(int argc,char **argv){
     srv.request.goal = atoll(argv[2]);
     srv.request.width = width;
     srv.request.height = height;
-
-
-    ros::shutdown();
+    // publish path to rviz
+    ros::Publisher path_pub = n.advertise<visualization_msgs::Marker>("path",1);
+    visualization_msgs::Marker &path;
+    path.header.frame_id = "planner";
+    path.header.stamp = ros::Time::now();
+    path.ns = "path";
+    path.action = visualization_msgs::Marker::ADD;
+    path.id = 0;
+    path.type = visualization_msgs::Marker::LINE_STRIP;
+    path.scale.x = 1;
+    path.color.r = 0.2f;
+    path.color.g = 0.2f;
+    path.color.b = 1.0f;
+    path.color.a = 1.0f;
+    if (client.call(srv)){
+        path.points = srv.response.path.PoseStamped
+        path_pub.publish(path);
+    }
     return 0;
 }
