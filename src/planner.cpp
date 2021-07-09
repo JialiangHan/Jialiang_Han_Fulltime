@@ -5,7 +5,9 @@
 
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
+#include <nav_msgs/OccupancyGrid.h>
 #include <map>
+#include <jialiang_han_fulltime/GetPlan.h>
 #include "astar.h"
 #include "node_3d.h"
 
@@ -21,7 +23,7 @@ void map_callback(nav_msgs::OccupancyGrid msg){
 }
 
 void agent_feedback_callback(geometry_msgs::PoseStamped msg){
-    current_position = msg
+    current_position = msg;
 }
 
 int main(int argc,char **argv){
@@ -33,7 +35,7 @@ int main(int argc,char **argv){
     ros::Subscriber map_sub = n.subscribe("grid_map", 1, map_callback);
     // subscribe agent current postion
     string agent_name;
-    agent_name = atoll(argv[1]);
+    agent_name = argv[1];
     string topic_name;
     // get topic name of specific agent
     topic_name = agent_name + "/agent_feedback";
@@ -42,12 +44,16 @@ int main(int argc,char **argv){
     ros::ServiceClient client = n.serviceClient<jialiang_han_fulltime::GetPlan>("get_plan");
     jialiang_han_fulltime::GetPlan srv;
     srv.request.start = current_position;
-    srv.request.goal = atoll(argv[2]);
+    // convert argv[2] into geometry_msgs::PoseStamped
+    string s(argv[2]);
+    srv.request.goal.pose.position.x = atoll(s[1]);
+    srv.request.goal.pose.position.y = atoll(s[3]);
+    srv.request.goal.pose.position.z = atoll(s[5]);
     srv.request.width = width;
     srv.request.height = height;
     // publish path to rviz
     ros::Publisher path_pub = n.advertise<visualization_msgs::Marker>("path",1);
-    visualization_msgs::Marker &path;
+    visualization_msgs::Marker path;
     path.header.frame_id = "planner";
     path.header.stamp = ros::Time::now();
     path.ns = "path";
@@ -60,7 +66,13 @@ int main(int argc,char **argv){
     path.color.b = 1.0f;
     path.color.a = 1.0f;
     if (client.call(srv)){
-        path.points = srv.response.path.PoseStamped
+        //todo need to convert nav_msgs/Path to visualization marker line strip
+        int &length;
+        &length = srv.response.path.poses.size();
+        for (i =0; i<length; i++){
+
+        }
+        path.points = srv.response.path.poses;
         path_pub.publish(path);
     }
     return 0;

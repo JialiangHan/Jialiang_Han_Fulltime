@@ -33,7 +33,7 @@ public:
     nav_msgs::Path* planning(geometry_msgs::PoseStamped& start, geometry_msgs::PoseStamped& goal, int width, int height);
 
 private:
-    priority_queue<Node3D*,node_comparison> openlist;
+    priority_queue< Node3D*, vector<Node3D*>, node_comparison> openlist;
     vector<Node3D*> pathlist;
 };
 }

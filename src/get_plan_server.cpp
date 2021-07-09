@@ -2,6 +2,7 @@
 // purpose of this server is to get path from start to goal
 
 #include <ros/ros.h>
+#include <jialiang_han_fulltime/GetPlan.h>
 #include "astar.h"
 
 using namespace planner;
