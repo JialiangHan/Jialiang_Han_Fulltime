@@ -7,6 +7,7 @@
 
 bool update_goal(jialiang_han_fulltime::UpdateGoal::Request &req, jialiang_han_fulltime::UpdateGoal::Response &res){
     //planner planner(); 
+    return true;
 }
 
 int main(int argc, char **argv){

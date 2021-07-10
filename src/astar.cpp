@@ -1,7 +1,7 @@
 #include "node_3d.h"
 #include "astar.h"
 
-using namespace planner;
+namespace planner{
 
 Node3D* Astar::path_planner(Node3D& start, Node3D& goal, Node3D* nodes3D, int width,int height){
     int index_predecessor, index_successor;
@@ -108,5 +108,6 @@ nav_msgs::Path Astar::planning(geometry_msgs::PoseStamped start, geometry_msgs::
         }
         return path;
     }
-
+    return path;
+}
 }

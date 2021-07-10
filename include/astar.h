@@ -21,21 +21,22 @@ struct node_comparison{
 class Astar{
 
 public:
+    Astar() {}
     // path planner using A star algorithm.
     //param start: start position
     //param goal: goal position
     //parm nodes3D: array of node 3D
     //width and height are from map info
-    static Node3D* path_planner(Node3D& start, Node3D& goal, Node3D* nodes3D, int width, int height);
+    Node3D* path_planner(Node3D& start, Node3D& goal, Node3D* nodes3D, int width, int height);
     // get path from goal, put all its parents into path
-    static void get_path(Node3D* goal,vector<Node3D*> pathlist);
+    void get_path(Node3D* goal,vector<Node3D*> pathlist);
     //this function use geometry msg posestamped as input and output is nav msgs path.
-    static nav_msgs::Path planning(geometry_msgs::PoseStamped start, geometry_msgs::PoseStamped goal, int width, int height);
-    static priority_queue< Node3D*, vector<Node3D*>, node_comparison> openlist;
+    nav_msgs::Path planning(geometry_msgs::PoseStamped start, geometry_msgs::PoseStamped goal, int width, int height);
+    priority_queue< Node3D*, vector<Node3D*>, node_comparison> openlist;
 
 private:
     
-    static vector<Node3D*> pathlist;
+    vector<Node3D*> pathlist;
 };
 }
 #endif
