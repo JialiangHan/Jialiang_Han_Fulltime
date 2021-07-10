@@ -12,7 +12,7 @@ namespace planner{
        Node3D():Node3D(0,0,0,0,0,nullptr) {}
        // cost so far: cost from initial node to current node
        // cost to go: distance from current node to goal node
-       Node3D(float x, float y,float theta, float cost_so_far, float cost_to_go, const Node3D* predecessor){
+       Node3D(float x, float y,float theta, float cost_so_far, float cost_to_go, Node3D* predecessor){
            this->x = x;
            this->y = y;
            this->theta = theta;
@@ -33,7 +33,7 @@ namespace planner{
        int get_index() const { return index;}
        bool is_open() const { return in_openlist;}
        bool is_closed() const { return in_closelist;}
-       const Node3D* get_predecessor() const { return predecessor;}
+       Node3D* get_predecessor() { return predecessor;}
 
        //setter methods
        void set_x(const float& x) { this->x = x;}
@@ -47,7 +47,7 @@ namespace planner{
        // put node into closelist
        void close() {in_openlist = false; in_closelist = true;}
        //set predecessor
-       void set_predecessor(const Node3D* predecessor) {this->predecessor = predecessor;}
+       void set_predecessor( Node3D* predecessor) {this->predecessor = predecessor;}
 
        // udpate cost so far from its predecessor
        void update_cost_so_far() { cost_so_far = cost_so_far + movement_cost(*predecessor);}
@@ -76,7 +76,7 @@ namespace planner{
        int index;
        bool in_openlist;
        bool in_closelist;
-       const Node3D* predecessor;
+       Node3D* predecessor;
    };
 }
 #endif
