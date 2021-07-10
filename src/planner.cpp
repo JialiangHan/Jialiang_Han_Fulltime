@@ -44,36 +44,23 @@ int main(int argc,char **argv){
     ros::ServiceClient client = n.serviceClient<jialiang_han_fulltime::GetPlan>("get_plan");
     jialiang_han_fulltime::GetPlan srv;
     srv.request.start = current_position;
-    // convert argv[2] into geometry_msgs::PoseStamped
-    string s(argv[2]);
-    srv.request.goal.pose.position.x = atoll(s[1]);
-    srv.request.goal.pose.position.y = atoll(s[3]);
-    srv.request.goal.pose.position.z = atoll(s[5]);
+    // convert argv[2]，argv[3],argv[4] into geometry_msgs::PoseStamped
+    srv.request.goal.pose.position.x = atoi(argv[2]);
+    srv.request.goal.pose.position.y = atoi(argv[3]);
+    srv.request.goal.pose.position.z = atoi(argv[4]);
     srv.request.width = width;
     srv.request.height = height;
     // publish path to rviz
-    ros::Publisher path_pub = n.advertise<visualization_msgs::Marker>("path",1);
-    visualization_msgs::Marker path;
-    path.header.frame_id = "planner";
-    path.header.stamp = ros::Time::now();
-    path.ns = "path";
-    path.action = visualization_msgs::Marker::ADD;
-    path.id = 0;
-    path.type = visualization_msgs::Marker::LINE_STRIP;
-    path.scale.x = 1;
-    path.color.r = 0.2f;
-    path.color.g = 0.2f;
-    path.color.b = 1.0f;
-    path.color.a = 1.0f;
-    if (client.call(srv)){
-        //todo need to convert nav_msgs/Path to visualization marker line strip
-        int &length;
-        &length = srv.response.path.poses.size();
-        for (i =0; i<length; i++){
+    ros::Publisher path_pub = n.advertise<nav_msgs::Path>("path",1);
+    
+    ros::Rate loop_rate(0.5);
 
+    while (ros::ok()){
+        if (client.call(srv)){
+            path_pub.publish(srv.response.path);
         }
-        path.points = srv.response.path.poses;
-        path_pub.publish(path);
+        ros::spinOnce();
+        loop_rate.sleep();
     }
     return 0;
 }

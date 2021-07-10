@@ -30,7 +30,7 @@ public:
     // get path from goal, put all its parents into path
     void get_path(Node3D* goal,vector<Node3D*> pathlist);
     //this function use geometry msg posestamped as input and output is nav msgs path.
-    nav_msgs::Path* planning(geometry_msgs::PoseStamped& start, geometry_msgs::PoseStamped& goal, int width, int height);
+    static nav_msgs::Path planning(geometry_msgs::PoseStamped& start, geometry_msgs::PoseStamped& goal, int width, int height);
 
 private:
     priority_queue< Node3D*, vector<Node3D*>, node_comparison> openlist;
