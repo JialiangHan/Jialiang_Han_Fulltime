@@ -3,7 +3,7 @@
 
 namespace planner{
 
-Node3D* Astar::path_planner(Node3D& start, Node3D& goal, Node3D* nodes3D, int width,int height){
+Node3D* Astar::path_planner(Node3D& start, Node3D& goal, int width,int height){
     int index_predecessor, index_successor;
     float new_cost_so_far;
 
@@ -11,7 +11,7 @@ Node3D* Astar::path_planner(Node3D& start, Node3D& goal, Node3D* nodes3D, int wi
     start.open();
     openlist.push(&start);
     index_predecessor = start.get_index();
-    nodes3D[index_predecessor] = start;
+    OpenDict[index_predecessor] = start;
     
     Node3D* current_node;
     Node3D* successor;
@@ -20,12 +20,14 @@ Node3D* Astar::path_planner(Node3D& start, Node3D& goal, Node3D* nodes3D, int wi
         current_node = openlist.top();
         index_predecessor =current_node->set_index(width);
 
-        if (nodes3D[index_predecessor].is_closed()){
+        if (current_node->is_closed()){
+        // if (OpenDict[index_predecessor].is_closed()){
             openlist.pop();
             continue;
         }
-        else if (nodes3D[index_predecessor].is_open()){
-            nodes3D[index_predecessor].close();
+        else if (current_node->is_open()){
+        //else if (OpenDict[index_predecessor].is_open()){
+            OpenDict[index_predecessor].close();
             openlist.pop();
 
             //goal test
@@ -43,11 +45,11 @@ Node3D* Astar::path_planner(Node3D& start, Node3D& goal, Node3D* nodes3D, int wi
                         new_cost_so_far = successor->get_cost_so_far();
 
                         // if successor is not in open list or successor has a lower cost so far value, then put it into openlsit
-                        if (!nodes3D[index_successor].is_open() || new_cost_so_far < nodes3D[index_successor].get_cost_so_far()){
+                        if (!OpenDict[index_successor].is_open() || new_cost_so_far < OpenDict[index_successor].get_cost_so_far()){
                             successor->update_cost_to_go(goal);
                             successor->open();
-                            nodes3D[index_successor] = *successor;
-                            openlist.push(&nodes3D[index_successor]);
+                            OpenDict[index_successor] = *successor;
+                            openlist.push(&OpenDict[index_successor]);
                             delete successor;
                         }
                         else {delete successor;}
@@ -74,7 +76,6 @@ void Astar::get_path(Node3D* goal, vector<Node3D*> path){
 }
 
 nav_msgs::Path Astar::planning(geometry_msgs::PoseStamped start, geometry_msgs::PoseStamped goal, int width, int height){
-    Node3D* nodes3D = new Node3D[width * height]();
     //convert start to node3D start
     float x_start = start.pose.position.x;
     float y_start = start.pose.position.y;
@@ -87,7 +88,7 @@ nav_msgs::Path Astar::planning(geometry_msgs::PoseStamped start, geometry_msgs::
     Node3D ngoal(x_goal,y_goal,theta_goal,0,0,nullptr);
     
     //find path
-    Node3D* solution = Astar::path_planner(nstart, ngoal, nodes3D, width, height);
+    Node3D* solution = Astar::path_planner(nstart, ngoal, width, height);
     //get path in vector form
     vector<Node3D*> path_vector;
     Astar::get_path(solution,path_vector);

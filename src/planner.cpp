@@ -43,23 +43,23 @@ int main(int argc,char **argv){
     //call get plan service
     ros::ServiceClient client = n.serviceClient<jialiang_han_fulltime::GetPlan>("get_plan");
     jialiang_han_fulltime::GetPlan srv;
-    srv.request.start = current_position;
     // convert argv[2]，argv[3],argv[4] into geometry_msgs::PoseStamped
     srv.request.goal.pose.position.x = atoi(argv[2]);
     srv.request.goal.pose.position.y = atoi(argv[3]);
     srv.request.goal.pose.position.z = atoi(argv[4]);
-    srv.request.width = width;
-    srv.request.height = height;
     // publish path to rviz
     ros::Publisher path_pub = n.advertise<nav_msgs::Path>("path",1);
     
     ros::Rate loop_rate(0.5);
 
     while (ros::ok()){
-        if (client.call(srv)){
-            path_pub.publish(srv.response.path);
-        }
         ros::spinOnce();
+        srv.request.start = current_position;
+        srv.request.width = width;
+        srv.request.height = height;
+        client.call(srv);
+        path_pub.publish(srv.response.path);
+        
         loop_rate.sleep();
     }
     return 0;
