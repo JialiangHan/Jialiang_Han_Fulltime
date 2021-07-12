@@ -3,58 +3,76 @@
 
 namespace planner{
 
-Node3D* Astar::path_planner(Node3D& start, Node3D& goal, int width,int height){
+Node3D* Astar::path_planner(Node3D& start, const Node3D& goal,Node3D* nodes3D, int width,int height){
+    // set index of predecessor and successor
     int index_predecessor, index_successor;
     float new_cost_so_far;
+    // reset the open and closed list
+    for (int i = 0; i < width * height; ++i) {
+        nodes3D[i].reset();
+    }
 
+    // define openlist as priority queue
+    priority_queue< Node3D*, vector<Node3D*>, node_comparison> openlist;
+
+    // update cost to go (heuristics) of start node
     start.update_cost_to_go(goal);
+    // mark start node as open
     start.open();
+    // put start node into openlist
     openlist.push(&start);
-    index_predecessor = start.get_index();
-    OpenDict[index_predecessor] = start;
-    
+    // set index of predecessor equal to start node
+    index_predecessor = start.set_index(width);
+    // nodes3D is Node3D array 
+    nodes3D[index_predecessor] = start;
+    // pointer to current node and successor
     Node3D* current_node;
     Node3D* successor;
-
+    // while openlist is not empty
     while (!openlist.empty()){
+        // pop node with lowest total cost in the openlist
         current_node = openlist.top();
         index_predecessor =current_node->set_index(width);
-
-        if (current_node->is_closed()){
-        // if (OpenDict[index_predecessor].is_closed()){
-            openlist.pop();
-            continue;
-        }
-        else if (current_node->is_open()){
-        //else if (OpenDict[index_predecessor].is_open()){
-            OpenDict[index_predecessor].close();
+        // if current node is in openlist
+        if (nodes3D[index_predecessor].is_open()){
+            // put current node into close list
+            nodes3D[index_predecessor].close();
+            // remove current node from open list
             openlist.pop();
 
             //goal test
             if (*current_node==goal){
                 return current_node;
             }
+            
             else {
                 for (int i = 0; i<Node3D::dir; i++){
                     //find successor of current node
                     successor = current_node->create_successor(i);
+                    // set index of successor
                     index_successor = successor->set_index(width);
-
-                    if (!successor->is_closed() ){
-                        successor->update_cost_so_far();
-                        new_cost_so_far = successor->get_cost_so_far();
+                    // make sure successor is on the grid map
+                    if (successor->is_on_grid(width,height)){
+                        // make sure successor is not in close list or has the same index as predecessor
+                        if (!successor->is_closed() || index_predecessor ==index_successor ){
+                            // update cost so far
+                            successor->update_cost_so_far();
+                            new_cost_so_far = successor->get_cost_so_far();
 
                         // if successor is not in open list or successor has a lower cost so far value, then put it into openlsit
-                        if (!OpenDict[index_successor].is_open() || new_cost_so_far < OpenDict[index_successor].get_cost_so_far()){
+                        if (!nodes3D[index_successor].is_open() || new_cost_so_far < nodes3D[index_successor].get_cost_so_far()||index_predecessor==index_successor){
+                            //update cost to go
                             successor->update_cost_to_go(goal);
+                            // put successor into openlist
                             successor->open();
-                            OpenDict[index_successor] = *successor;
-                            openlist.push(&OpenDict[index_successor]);
+                            nodes3D[index_successor] = *successor;
+                            openlist.push(&nodes3D[index_successor]);
                             delete successor;
                         }
                         else {delete successor;}
-                    }
-                    else {delete successor;}
+                        }
+                    } else {delete successor;}
+                    
                 }
             }
         }
@@ -65,50 +83,15 @@ Node3D* Astar::path_planner(Node3D& start, Node3D& goal, int width,int height){
     return nullptr;
 }
 
-void Astar::get_path(Node3D* goal, vector<Node3D*> path){
-    path.clear();
-
-    Node3D* current_node = goal;
-    while (current_node != nullptr){
-        path.push_back(current_node);
-        current_node = current_node->get_predecessor();
+void Astar::trace_path(const Node3D* goal, vector<Node3D> path){
+    if (goal == nullptr){
+        this->path = path;
+        return;
     }
+
+    path.push_back(*goal);
+    trace_path(goal->get_predecessor(),path);
 }
 
-nav_msgs::Path Astar::planning(geometry_msgs::PoseStamped start, geometry_msgs::PoseStamped goal, int width, int height){
-    //convert start to node3D start
-    float x_start = start.pose.position.x;
-    float y_start = start.pose.position.y;
-    float theta_start = start.pose.position.z;
-    Node3D nstart(x_start,y_start,theta_start,0,0,nullptr);
-    //convert goal to node3D goal
-    float x_goal = goal.pose.position.x;
-    float y_goal = goal.pose.position.y;
-    float theta_goal = goal.pose.position.z;
-    Node3D ngoal(x_goal,y_goal,theta_goal,0,0,nullptr);
-    
-    //find path
-    Node3D* solution = Astar::path_planner(nstart, ngoal, width, height);
-    //get path in vector form
-    vector<Node3D*> path_vector;
-    Astar::get_path(solution,path_vector);
-    //convert vector path into nav msgs path
-    nav_msgs::Path path;
-    if (!pathlist.empty()){
-        path.header.stamp = ros::Time::now();
-        path.header.frame_id = "planner";
-        path.poses.clear();
-        for (int i=0; i<pathlist.size(); i++){
-            geometry_msgs::PoseStamped pose_stamped;
-            pose_stamped.header.stamp = ros::Time::now();
-            pose_stamped.header.frame_id = "planner";
-            pose_stamped.pose.position.x = pathlist[i]->get_x();
-            pose_stamped.pose.position.y = pathlist[i]->get_y();
-            pose_stamped.pose.position.z = pathlist[i]->get_theta();
-            path.poses.push_back(pose_stamped);
-        }
-        return path;
-    }
-    return path;
-}
+
 }

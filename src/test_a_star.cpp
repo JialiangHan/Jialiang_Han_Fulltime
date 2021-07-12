@@ -12,6 +12,7 @@ int main(int argc, char **argv){
     ros::NodeHandle n;
    
     ros::Publisher pub = n.advertise<nav_msgs::Path>("path",1);
+    
     geometry_msgs::PoseStamped start;
     geometry_msgs::PoseStamped goal;
     start.pose.position.x = 1;
