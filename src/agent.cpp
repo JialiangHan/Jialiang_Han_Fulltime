@@ -2,9 +2,9 @@
 // publish current position on topic "agent_feedback"
 // a service "update_goal" to call planner for a path
 
-#include "ros/ros.h"
-#include "visualization_msgs/Marker.h"
-#include "geometry_msgs/PoseStamped.h"
+#include <ros/ros.h>
+#include <visualization_msgs/Marker.h>
+#include <geometry_msgs/PoseStamped.h>
 
 int main(int argc,char **argv){
 
@@ -32,7 +32,7 @@ int main(int argc,char **argv){
     visualization_msgs::Marker marker;
     marker.header.frame_id = "planner";
     marker.header.stamp = ros::Time::now();
-    marker.ns = "marker";
+    marker.ns = ros::this_node::getName();
     marker.id = 0;
     marker.type =  visualization_msgs::Marker::CYLINDER;
     marker.action = visualization_msgs::Marker::ADD;
@@ -45,7 +45,7 @@ int main(int argc,char **argv){
     marker.color.b = 0.0f;
     marker.color.a = 1.0; 
 
-    ros::Rate loop_rate(0.5);
+    ros::Rate loop_rate(30);
 
     while (ros::ok()){
         marker_pub.publish(marker);

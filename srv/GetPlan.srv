@@ -1,0 +1,6 @@
+geometry_msgs/PoseStamped start
+geometry_msgs/PoseStamped goal
+int64 width
+int64 height
+---
+nav_msgs/Path path

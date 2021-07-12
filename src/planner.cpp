@@ -1,32 +1,66 @@
 // this file create an planner node
 // subscribler topic: agent_feedback to get current position of agent
+// subscrible grid map to get map info
 // service client: get_plan
 
-#include "ros/ros.h"
-#include "nav_msgs/OccupancyGrid.h"
+#include <ros/ros.h>
+#include <visualization_msgs/Marker.h>
+#include <nav_msgs/OccupancyGrid.h>
+#include <map>
+#include <jialiang_han_fulltime/GetPlan.h>
+#include "astar.h"
+#include "node_3d.h"
 
+using namespace planner;
+
+int width;
+int height;
+geometry_msgs::PoseStamped current_position;
+
+void map_callback(nav_msgs::OccupancyGrid msg){
+    width = msg.info.width;
+    height = msg.info.height;
+}
+
+void agent_feedback_callback(geometry_msgs::PoseStamped msg){
+    current_position = msg;
+}
 
 int main(int argc,char **argv){
 
     ros::init(argc, argv, "planner");
 
     ros::NodeHandle n;
-
-    ros::Publisher pub = n.advertise<geometry_msgs::PoseStamped>("agent_feedback",1);
-    geometry_msgs::PoseStamped current_position;
-
-    current_position.header.frame_id = "current_position";
-    current_position.header.stamp = ros::Time::now();
-    current_position.info.resolution = 1; // unit is meter
-    current_position.info.width = 10; //unit is meter
-    current_position.info.height = 10; //unit is meter
-
-
+    // subscribe map info
+    ros::Subscriber map_sub = n.subscribe("grid_map", 1, map_callback);
+    // subscribe agent current postion
+    string agent_name;
+    agent_name = argv[1];
+    string topic_name;
+    // get topic name of specific agent
+    topic_name = agent_name + "/agent_feedback";
+    ros::Subscriber agent_feedback_sub = n.subscribe(topic_name, 1, agent_feedback_callback);
+    //call get plan service
+    ros::ServiceClient client = n.serviceClient<jialiang_han_fulltime::GetPlan>("get_plan");
+    jialiang_han_fulltime::GetPlan srv;
+    // convert argv[2]，argv[3],argv[4] into geometry_msgs::PoseStamped
+    srv.request.goal.pose.position.x = atoi(argv[2]);
+    srv.request.goal.pose.position.y = atoi(argv[3]);
+    srv.request.goal.pose.position.z = atoi(argv[4]);
+    // publish path to rviz
+    ros::Publisher path_pub = n.advertise<nav_msgs::Path>("path",1);
+    
+    ros::Rate loop_rate(0.5);
 
     while (ros::ok()){
-        pub.publish(current_position);
+        ros::spinOnce();
+        srv.request.start = current_position;
+        srv.request.width = width;
+        srv.request.height = height;
+        client.call(srv);
+        path_pub.publish(srv.response.path);
+        
+        loop_rate.sleep();
     }
-
-    ros::shutdown();
     return 0;
 }

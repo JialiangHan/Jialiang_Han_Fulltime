@@ -1,7 +1,7 @@
 // this file create a grid map publisher
 
-#include "ros/ros.h"
-#include "nav_msgs/OccupancyGrid.h"
+#include <ros/ros.h>
+#include <nav_msgs/OccupancyGrid.h>
 
 int main(int argc,char **argv){
 
@@ -21,11 +21,13 @@ int main(int argc,char **argv){
     int p[map.info.width*map.info.height] = {0}; //value here should be [0,100] is the probality
     std::vector<signed char> a(p,p+100);
     map.data = a;
+    ros::Rate loop_rate(30);
 
     while (ros::ok()){
         pub.publish(map);
+        ros::spinOnce();
+        loop_rate.sleep();
     }
 
-    ros::shutdown();
     return 0;
 }
