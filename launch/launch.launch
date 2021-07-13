@@ -18,13 +18,7 @@
         <param name="theta" type="int" value="0"/>
     </node>
 
-    ################ start get plan server ################
-    <node pkg="jialiang_han_fulltime" type="get_plan_server" name="get_plan_server"/>
-
     ################ start update goal server ################
     <node pkg="jialiang_han_fulltime" type="update_goal_server" name="update_goal_server"/>
-
-    ################ start planner node ################
-    <node pkg="jialiang_han_fulltime" type="planner" name="planner" args="agent_1 8 8 0"/>
 
 </launch>
