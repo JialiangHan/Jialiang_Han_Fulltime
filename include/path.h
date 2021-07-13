@@ -7,13 +7,15 @@
 
 #include <cstring>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #include <ros/ros.h>
 #include <nav_msgs/Path.h>
 #include <geometry_msgs/PoseStamped.h>
 
-#include "node3d.h"
+#include "node_3d.h"
+
+using namespace std;
 
 namespace planner {
 
@@ -22,8 +24,7 @@ class Path {
   /// The default constructor initializing the path object and setting publishers for the same.
   Path() {
     std::string pathTopic = "/path";
-    }
-
+    
     // TOPICS TO PUBLISH
     pubPath = n.advertise<nav_msgs::Path>(pathTopic, 1);
 
@@ -34,12 +35,13 @@ class Path {
   bool check_path(Node3D& start, const Node3D& goal);
   // get path list from dict
   void get_path_from_dict(Node3D& start, const Node3D& goal);
+  void update_path_dict();
   // transfer path from vector form into a nav_msgs path
-  void update_Path(const vector<Node3D> &nodePath);
+  void update_path(const std::vector<Node3D> &nodePath);
   // add node to nav::msgs/Path
   void addSegment(const Node3D& node);
   /// return path got from astar
-  nav_msgs::Path get_path() {return path};
+  nav_msgs::Path get_path() {return path;}
 
   /// Clears the path
   void clear();
@@ -53,7 +55,7 @@ class Path {
   ros::Publisher pubPath;
   nav_msgs::Path path;
   /// a dict to store path
-  map<vector<Node3D>, vector<Node3D>> path_dict;
+//  unordered_map<vector<Node3D>, vector<Node3D>> path_dict;
   /// a vector contains path lits
   vector<Node3D> path_list;
 

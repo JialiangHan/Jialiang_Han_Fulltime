@@ -1,12 +1,12 @@
 #ifndef PLANNER_H
 #define PLANNER_H
 
-
+#include <string.h>
 #include <ros/ros.h>
 #include <nav_msgs/OccupancyGrid.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <jialiang_han_fulltime/GetPlan.h>
-#include "atar.h"
+#include "astar.h"
 #include "node_3d.h"
 #include "path.h"
 
@@ -15,11 +15,12 @@ namespace planner {
 class Planner {
  public:
   /// The default constructor
-  Planner();
-  Planner(string agent_name, geometry_msgs::PoseStamped goal){
-      this->agent_name=agent_name;
-      this->goal = goal;
-  };
+  // Planner();
+  Planner(std::string agent_name, geometry_msgs::PoseStamped goal);
+  // {
+  //     this->agent_name=agent_name;
+  //     this->goal = goal;
+  // };
 
 
   // a callback function to set map size
@@ -45,6 +46,7 @@ class Planner {
   ros::NodeHandle n;
   /// A service server to get plan
   ros::ServiceServer service;
+  ros::ServiceClient client;
   /// A subscriber for receiving map updates
   ros::Subscriber subMap;
   /// A subscriber for receiving start updates: current position of agent
@@ -58,9 +60,9 @@ class Planner {
   /// The goal pose set through RViz
   geometry_msgs::PoseStamped goal;
   /// agent name
-  string agent_name;
+  std::string agent_name;
   Path path;
-
+  Astar astar;
 };
 }
 #endif // PLANNER_H

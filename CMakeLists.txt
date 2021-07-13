@@ -57,7 +57,7 @@ add_service_files(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES Jialiang_Han_Fulltime
-  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp tf message_runtime
+  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp message_runtime
   DEPENDS system_lib
 )
 

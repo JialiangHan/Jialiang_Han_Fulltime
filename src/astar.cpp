@@ -1,5 +1,6 @@
 #include "node_3d.h"
 #include "astar.h"
+#include <queue>
 
 namespace planner{
 
@@ -54,7 +55,7 @@ Node3D* Astar::path_planner(Node3D& start, const Node3D& goal,Node3D* nodes3D, i
                     // make sure successor is on the grid map
                     if (successor->is_on_grid(width,height)){
                         // make sure successor is not in close list or has the same index as predecessor
-                        if (!successor->is_closed() || index_predecessor ==index_successor ){
+                        if (!nodes3D[index_successor].is_closed() || index_predecessor ==index_successor ){
                             // update cost so far
                             successor->update_cost_so_far();
                             new_cost_so_far = successor->get_cost_so_far();

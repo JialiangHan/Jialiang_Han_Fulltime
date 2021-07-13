@@ -6,9 +6,11 @@
 #include "astar.h"
 #include "planner.h"
 
+using namespace planner;
+
 bool update_goal(jialiang_han_fulltime::UpdateGoal::Request &req, jialiang_han_fulltime::UpdateGoal::Response &res){
-    Planner::Planner planner(req.agent_name, req.goal);
-    res.path = planner.call_service();
+    Planner astar(req.agent_name, req.goal);
+    res.path = astar.call_service();
     return true;
 }
 

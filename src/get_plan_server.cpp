@@ -3,14 +3,14 @@
 
 #include <ros/ros.h>
 #include <jialiang_han_fulltime/GetPlan.h>
-#include "astar.h"
+#include "planner.h"
 
 using namespace planner;
 
 bool get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltime::GetPlan::Response &res){
-    Planner::Planner planner(req.agent_name, req.goal);
-    planner.plan();
-    res.path = planner.get_path();
+    Planner astar(req.agent_name, req.goal);
+    astar.plan();
+    res.path = astar.get_path();
     return true;
 }
 

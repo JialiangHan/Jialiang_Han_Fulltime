@@ -21,4 +21,6 @@
     ################ start update goal server ################
     <node pkg="jialiang_han_fulltime" type="update_goal_server" name="update_goal_server"/>
 
+    ################ start update goal client ################
+    <node pkg="jialiang_han_fulltime" type="update_goal_client" name="update_goal_client" args="agent_1 8 9 0"/>
 </launch>
