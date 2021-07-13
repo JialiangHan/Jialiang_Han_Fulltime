@@ -1,4 +1,4 @@
 <!-- -*- mode: XML -*- -->
 <launch>
-    <node pkg="jialiang_han_fulltime" type="test_a_star" name="test_a_star" />
+    <node pkg="jialiang_han_fulltime" type="test_a_star" name="test_a_star"/>
 </launch>

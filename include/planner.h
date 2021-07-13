@@ -5,18 +5,13 @@
 #include <ros/ros.h>
 #include <nav_msgs/OccupancyGrid.h>
 #include <geometry_msgs/PoseStamped.h>
-
+#include <jialiang_han_fulltime/GetPlan.h>
 #include "atar.h"
 #include "node_3d.h"
-
+#include "path.h"
 
 namespace planner {
-/*!
-   \brief A class that creates the interface for the hybrid A* algorithm.
 
-    It inherits from `ros::nav_core::BaseGlobalPlanner` so that it can easily be used with the ROS navigation stack
-   \todo make it actually inherit from nav_core::BaseGlobalPlanner
-*/
 class Planner {
  public:
   /// The default constructor
@@ -27,32 +22,29 @@ class Planner {
   };
 
 
-  /*!
-     \brief Sets the map e.g. through a callback from a subscriber listening to map updates.
-     \param map the map or occupancy grid
-  */
+  // a callback function to set map size
   void setMap(const nav_msgs::OccupancyGrid::Ptr map);
 
-  /*!
-     \brief setStart
-     \param start the start pose
-  */
+  // a callback function to set start node
   void setStart(const geometry_msgs::PoseStamped::ConstPtr& start);
 
-  /*!
-     \brief setGoal
-     \param goal the goal pose
-  */
+  // a callback function to set goal node
   void setGoal(const geometry_msgs::PoseStamped::ConstPtr& goal);
 
-  /*!
-     \brief The central function entry point making the necessary preparations to start the planning.
-  */
+  // main path planning function
   void plan();
+  // return path in nav::msgs/path format
+  nav_msgs::Path get_path(){ return path.get_path();}
+  /// function for service get plan
+  bool get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltime::GetPlan::Response &res);
+  /// this function call get plan service
+  nav_msgs::Path call_service();
 
  private:
   /// The node handle
   ros::NodeHandle n;
+  /// A service server to get plan
+  ros::ServiceServer service;
   /// A subscriber for receiving map updates
   ros::Subscriber subMap;
   /// A subscriber for receiving start updates: current position of agent
@@ -67,6 +59,7 @@ class Planner {
   geometry_msgs::PoseStamped goal;
   /// agent name
   string agent_name;
+  Path path;
 
 };
 }

@@ -8,8 +8,9 @@
 using namespace planner;
 
 bool get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltime::GetPlan::Response &res){
-    Astar a;
-    res.path = a.planning(req.start, req.goal, req.width, req.height);
+    Planner::Planner planner(req.agent_name, req.goal);
+    planner.plan();
+    res.path = planner.get_path();
     return true;
 }
 

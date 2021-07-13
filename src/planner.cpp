@@ -20,8 +20,15 @@ Planner::Planner(agent_name, end){
     string agent_feedback = "/"+agent_name + "/agent_feedback";
     subStart = n.subscribe(agent_feedback,1, &Planner::setStart,this);
     goal = end;
+    service = n.advertiseService("get_plan",&Planner::get_plan,this);
 }
 
+bool Planner::get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltime::GetPlan::Response &res){
+    Planner::Planner planner(req.agent_name, req.goal);
+    planner.plan();
+    res.path = planner.get_path();
+    return true;
+}
 
 void Planner::setMap(const nav::msgs::OccupancyGrid::Ptr map){
     grid = map;
@@ -31,6 +38,16 @@ void Planner::setStart(const geometry_msgs::PoseStamped::ConstPtr& current_posit
     start = *current_position;
 }
 
+nav_msgs::Path call_service(){
+    client = n.serviceClient<jialiang_han_fulltime::GetPlan>("get_plan");
+    jialiang_han_fulltime::GetPlan srv;
+    srv.request.agent_name = agent_name;
+    srv.request.goal = goal;
+//    client.call(srv);
+    if (ros::service::call("get_plan",srv)){
+        return srv.response.path;
+    }
+}
 void plan(){
     int width = grid->info.width;
     int height = grid->info.height;
@@ -41,65 +58,27 @@ void plan(){
     int y = goal.pose.position.y ;
 
     const Node3D nGoal(x, y, 0, 0, 0, nullptr);
-_______________________
+
     // retrieving start position
     x = start.pose.pose.position.x ;
     y = start.pose.pose.position.y ;
     Node3D nStart(x, y, 0, 0, 0, nullptr);
-
-    Node3D* solution = Astar::path_planner(nStart,nGoal,nodes3D, width,height);
-    Astar::trace_path();
-    
-
-}
-int width;
-int height;
-geometry_msgs::PoseStamped current_position;
-
-void map_callback(nav_msgs::OccupancyGrid msg){
-    width = msg.info.width;
-    height = msg.info.height;
-}
-
-void agent_feedback_callback(geometry_msgs::PoseStamped msg){
-    current_position = msg;
-}
-
-int main(int argc,char **argv){
-
-    ros::init(argc, argv, "planner");
-
-    ros::NodeHandle n;
-    // subscribe map info
-    ros::Subscriber map_sub = n.subscribe("grid_map", 1, map_callback);
-    // subscribe agent current postion
-    string agent_name;
-    agent_name = argv[1];
-    string topic_name;
-    // get topic name of specific agent
-    topic_name = agent_name + "/agent_feedback";
-    ros::Subscriber agent_feedback_sub = n.subscribe(topic_name, 1, agent_feedback_callback);
-    //call get plan service
-    ros::ServiceClient client = n.serviceClient<jialiang_han_fulltime::GetPlan>("get_plan");
-    jialiang_han_fulltime::GetPlan srv;
-    // convert argv[2]，argv[3],argv[4] into geometry_msgs::PoseStamped
-    srv.request.goal.pose.position.x = atoi(argv[2]);
-    srv.request.goal.pose.position.y = atoi(argv[3]);
-    srv.request.goal.pose.position.z = atoi(argv[4]);
-    // publish path to rviz
-    ros::Publisher path_pub = n.advertise<nav_msgs::Path>("path",1);
-    
-    ros::Rate loop_rate(0.5);
-
-    while (ros::ok()){
-        ros::spinOnce();
-        srv.request.start = current_position;
-        srv.request.width = width;
-        srv.request.height = height;
-        client.call(srv);
-        path_pub.publish(srv.response.path);
-        
-        loop_rate.sleep();
+    // check if start and goal exist in the path dict
+    if path.check_path(nstart, nGoal){
+        path.get_path_from_dict(nstart, nGoal);
+        path.update_path(path_list);
+        path.publishPath();
     }
-    return 0;
+
+    else:
+        // CLEAR THE PATH
+        path.clear();
+        // find goal node
+        Node3D* solution = Astar::path_planner(nStart,nGoal,nodes3D, width,height);
+        // trace its parent and put it into a path list(vector)
+        Astar::trace_path();
+        path.update_path(Astar::get_path());
+        path.publishPath();
+
+    delete [] nodes3D;
 }

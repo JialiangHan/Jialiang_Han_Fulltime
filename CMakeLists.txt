@@ -17,10 +17,14 @@ find_package(catkin REQUIRED COMPONENTS
 set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/astar.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/node_3d.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/planner.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/path.cpp
     )
 set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/astar.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/node_3d.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/planner.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/path.h
     )
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -68,10 +72,6 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/Jialiang_Han_Fulltime.cpp
-# )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -110,17 +110,13 @@ add_executable(grid_map src/grid_map.cpp )
 add_dependencies(grid_map ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(grid_map ${catkin_LIBRARIES})
 
-add_executable(planner src/planner.cpp ${HEADERS} ${SOURCES})
-add_dependencies(planner ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(planner ${catkin_LIBRARIES})
-
 add_executable(update_goal_server src/update_goal_server.cpp ${HEADERS} ${SOURCES})
 target_link_libraries(update_goal_server ${catkin_LIBRARIES})
 add_dependencies(update_goal_server jialiang_han_fulltime_gencpp)
 
-add_executable(get_plan_client src/get_plan_client.cpp)
-target_link_libraries(get_plan_client ${catkin_LIBRARIES})
-add_dependencies(get_plan_client jialiang_han_fulltime_gencpp)
+add_executable(update_goal_client src/update_goal_client.cpp)
+target_link_libraries(update_goal_client ${catkin_LIBRARIES})
+add_dependencies(update_goal_client jialiang_han_fulltime_gencpp)
 
 add_executable(test_a_star src/test_a_star.cpp ${HEADERS} ${SOURCES})
 add_dependencies(test_a_star ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
