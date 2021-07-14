@@ -8,18 +8,22 @@
 using namespace planner;
 
 Planner::Planner (string agent_name, geometry_msgs::PoseStamped end) {
+    goal = end;
+
     // subscribe map info
     subMap = n.subscribe("/grid_map",1, &Planner::setMap, this);
     string agent_feedback = "/"+agent_name + "/agent_feedback";
     subStart = n.subscribe(agent_feedback,1, &Planner::setStart,this);
-    goal = end;
+
     service = n.advertiseService("get_plan",&Planner::get_plan,this);
+    ros::spinOnce();
+
 };
 
 bool Planner::get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltime::GetPlan::Response &res){
-    Planner planner(req.agent_name, req.goal);
-    planner.plan();
-    res.path = planner.get_path();
+//    Planner planner(req.agent_name, req.goal);
+    Planner::plan();
+    res.path = Planner::get_path();
     return true;
 }
 
@@ -44,10 +48,10 @@ nav_msgs::Path Planner::call_service(){
 }
 
 void Planner::plan(){
-    // int width = grid->info.width;
-    // int height = grid->info.height;
-    int width =10;
-    int height =10;
+     int width = grid->info.width;
+     int height = grid->info.height;
+//    int width =10;
+//    int height =10;
     Node3D* nodes3D = new Node3D[width*height]();
 
     // retrieving goal position
@@ -75,7 +79,7 @@ void Planner::plan(){
         // trace its parent and put it into a path list(vector)
         astar.trace_path(solution);
         path.update_path(astar.get_path());
-        path.publishPath();
+//        path.publishPath();
     // }
     delete [] nodes3D;
 }
