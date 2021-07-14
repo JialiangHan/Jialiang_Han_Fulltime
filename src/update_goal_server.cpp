@@ -2,10 +2,16 @@
 // purpose of this server is to send goal to node planner to request a path to goal
 
 #include <ros/ros.h>
+#include <jialiang_han_fulltime/UpdateGoal.h>
 #include "astar.h"
+#include "planner.h"
 
-bool update_goal(jialiang_han_fulltime::UpateGoal::Request &req, jialiang_han_fulltime::UpdateGoal::Response &res){
-    planner planner(); 
+using namespace planner;
+
+bool update_goal(jialiang_han_fulltime::UpdateGoal::Request &req, jialiang_han_fulltime::UpdateGoal::Response &res){
+    Planner astar(req.agent_name, req.goal);
+    res.path = astar.call_service();
+    return true;
 }
 
 int main(int argc, char **argv){
