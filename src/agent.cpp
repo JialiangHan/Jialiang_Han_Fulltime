@@ -45,7 +45,7 @@ int main(int argc,char **argv){
     marker.color.b = 0.0f;
     marker.color.a = 1.0; 
 
-    ros::Rate loop_rate(30);
+    ros::Rate loop_rate(10);
 
     while (ros::ok()){
         marker_pub.publish(marker);
