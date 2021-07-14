@@ -14,6 +14,7 @@
 #include <geometry_msgs/PoseStamped.h>
 
 #include "node_3d.h"
+#include "key_hash.h"
 
 using namespace std;
 
@@ -55,7 +56,7 @@ class Path {
   ros::Publisher pubPath;
   nav_msgs::Path path;
   /// a dict to store path
-//  unordered_map<vector<Node3D>, vector<Node3D>> path_dict;
+  unordered_map<Key, vector<Node3D>, KeyHasher> path_dict;
   /// a vector contains path lits
   vector<Node3D> path_list;
 

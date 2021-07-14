@@ -26,19 +26,19 @@ void Path::update_path(const std::vector<Node3D>& nodePath) {
 }
 
 // check if path exist for this start and goal
-// bool Path::check_path(Node3D& start, const Node3D& goal){
-//     std::vector<Node3D> start_end_point {start, goal};
-//     if (path_dict.count(start_end_point) >0) {
-//         return true;
-//     }
-//     else { return false;}
-// }
+ bool Path::check_path(Node3D& start, const Node3D& goal){
+     Key start_end_point = {start, goal};
+     if (path_dict.count(start_end_point) >0) {
+         return true;
+     }
+     else { return false;}
+ }
 
 // get path from dict
-// void Path::get_path_from_dict(Node3D& start, const Node3D& goal){
-//     std::vector<Node3D> start_end_point {start, goal};
-//     path_list = path_dict[start_end_point];
-// }
+ void Path::get_path_from_dict(Node3D& start, const Node3D& goal){
+     Key start_end_point = {start, goal};
+     path_list = path_dict[start_end_point];
+ }
 // update path using dict path
 void Path::update_path_dict(){
   path.header.stamp = ros::Time::now();
