@@ -3,6 +3,11 @@
 #include <ros/ros.h>
 #include <nav_msgs/OccupancyGrid.h>
 
+void position_callback(const geometry_msgs::PoseStamped msg)
+{
+    map.data[msg.pose.position.x * map.info.width + msg.pose.position.y] = 1;
+}
+
 int main(int argc,char **argv){
 
     ros::init(argc, argv, "grid_map");
@@ -10,6 +15,7 @@ int main(int argc,char **argv){
     ros::NodeHandle n;
 
     ros::Publisher pub = n.advertise<nav_msgs::OccupancyGrid>("grid_map",1);
+
     nav_msgs::OccupancyGrid map;
 
     map.header.frame_id = "planner";
@@ -21,6 +27,10 @@ int main(int argc,char **argv){
     int p[map.info.width*map.info.height] = {0}; //value here should be [0,100] is the probality
     std::vector<signed char> a(p,p+100);
     map.data = a;
+    // subscribe agent position
+    ros::Subscriber agent_1_sub = n.subscribe("/agent_1/agent_feedback",1, position_callback);
+    ros::Subscriber agent_2_sub = n.subscribe("/agent_2/agent_feedback",1, position_callback);
+
     ros::Rate loop_rate(30);
 
     while (ros::ok()){
