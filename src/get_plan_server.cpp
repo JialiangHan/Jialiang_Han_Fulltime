@@ -11,6 +11,7 @@ bool get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltim
     Planner astar(req.agent_name, req.goal);
     astar.plan();
     res.path = astar.get_path();
+    // ros::spin();
     return true;
 }
 

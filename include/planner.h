@@ -24,13 +24,13 @@ class Planner {
 
 
   // a callback function to set map size
-  void setMap(const nav_msgs::OccupancyGrid::Ptr map);
+  void setMap(const nav_msgs::OccupancyGrid map);
 
   // a callback function to set start node
-  void setStart(const geometry_msgs::PoseStamped::ConstPtr& start);
+  void setStart(const geometry_msgs::PoseStamped start);
 
   // a callback function to set goal node
-  void setGoal(const geometry_msgs::PoseStamped::ConstPtr& goal);
+  void setGoal(const geometry_msgs::PoseStamped goal);
 
   // main path planning function
   void plan();
@@ -39,7 +39,7 @@ class Planner {
   /// function for service get plan
   bool get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltime::GetPlan::Response &res);
   /// this function call get plan service
-  nav_msgs::Path call_service();
+  nav_msgs::Path call_service(std::string name, geometry_msgs::PoseStamped point);
 
  private:
   /// The node handle
@@ -54,7 +54,7 @@ class Planner {
   /// A publisher for publish path to rviz
   ros::Publisher path_pub;
   /// A pointer to the grid the planner runs on
-  nav_msgs::OccupancyGrid::Ptr grid;
+  nav_msgs::OccupancyGrid grid;
   /// The start pose set through RViz
   geometry_msgs::PoseStamped start;
   /// The goal pose set through RViz

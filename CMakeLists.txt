@@ -80,6 +80,10 @@ add_executable(get_plan_server src/get_plan_server.cpp ${HEADERS} ${SOURCES})
 target_link_libraries(get_plan_server ${catkin_LIBRARIES})
 add_dependencies(get_plan_server jialiang_han_fulltime_gencpp)
 
+add_executable(get_plan_client src/get_plan_client.cpp)
+target_link_libraries(get_plan_client ${catkin_LIBRARIES})
+add_dependencies(get_plan_client jialiang_han_fulltime_gencpp)
+
 add_executable(grid_map src/grid_map.cpp )
 add_dependencies(grid_map ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(grid_map ${catkin_LIBRARIES})
