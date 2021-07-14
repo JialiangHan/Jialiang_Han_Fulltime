@@ -64,14 +64,14 @@ void Planner::plan(){
     x = start.pose.position.x ;
     y = start.pose.position.y ;
     Node3D nStart(x, y, 0, 0, 0, nullptr);
-    // // check if start and goal exist in the path dict
-    // if (path.check_path(nStart, nGoal)) {
-    //     path.get_path_from_dict(nStart, nGoal);
-    //     path.update_path_dict();
-    //     path.publishPath();
-    // }
+     // check if start and goal exist in the path dict
+     if (path.check_path(nStart, nGoal)) {
+         path.get_path_from_dict(nStart, nGoal);
+         path.update_path_dict();
+//         path.publishPath();
+     }
 
-    // else {
+     else {
         // CLEAR THE PATH
         path.clear();
         // find goal node
@@ -80,6 +80,6 @@ void Planner::plan(){
         astar.trace_path(solution);
         path.update_path(astar.get_path());
 //        path.publishPath();
-    // }
+     }
     delete [] nodes3D;
 }
