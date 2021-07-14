@@ -17,6 +17,8 @@ int main(int argc, char **argv){
     goal.pose.position.z=0;
     Planner pl("agent_1",goal);
     pl.plan();
+    ros::Publisher path_pub = n.advertise<nav_msgs::Path>("path",1);
+    path_pub.publish(pl.get_path());
     ros::spin();
     return 0;
 }
