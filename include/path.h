@@ -29,7 +29,7 @@ class Path {
     pubPath = n.advertise<nav_msgs::Path>(pathTopic, 1);
 
     // CONFIGURE THE CONTAINER
-    path.header.frame_id = "path";
+    path.header.frame_id = "planner";
   }
   // check if path exist for this start and goal
   bool check_path(Node3D& start, const Node3D& goal);
