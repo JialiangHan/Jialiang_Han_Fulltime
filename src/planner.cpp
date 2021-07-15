@@ -25,7 +25,7 @@ Planner::Planner (std::string agent_name, geometry_msgs::PoseStamped end) {
         subStart = n.subscribe("/agent_2/agent_feedback",10, &Planner::setStart,this);
     }
     // my_callback_queue.callOne(ros::WallDuration(0));
-    // service = n.advertiseService("get_plan",&Planner::get_plan,this);
+    service = n.advertiseService("get_plan",&Planner::get_plan,this);
     // my_callback_queue.callOne(ros::WallDuration(0));
     // ros::spinOnce();
 };
