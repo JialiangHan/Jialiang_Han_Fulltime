@@ -3,44 +3,47 @@
 // subscrible grid map to get map info
 // service client: get_plan
 #include <ros/ros.h>
+#include <ros/callback_queue.h>
 #include "planner.h"
 #include <iostream>
 #include <string>
+
 
 using namespace planner;
 
 Planner::Planner (std::string agent_name, geometry_msgs::PoseStamped end) {
     goal = end;
-
+    // ros::CallbackQueue my_callback_queue;
+    // n.setCallbackQueue(&my_callback_queue);
     // subscribe map info
     subMap = n.subscribe("/grid_map",1, &Planner::setMap, this);
-    std::string agent_feedback;
-    std::string pre = "/";
-    std::string topic_name = "/agent_feedback";
-    agent_feedback = pre+ agent_name ;
-    // todo: here something went wrong, agent_feedback didnt seem to be "/agent_1/agent_feedback"
-    agent_feedback = agent_feedback + topic_name;
-    // ROS_INFO( agent_feedback);
-    subStart = n.subscribe(agent_feedback,1, &Planner::setStart,this);
+    // my_callback_queue.callOne(ros::WallDuration(0));
+    if (agent_name == "agent_1"){
+        subStart = n.subscribe("/agent_1/agent_feedback",10, &Planner::setStart,this);
+    }
+    if (agent_name == "agent_2"){
+        subStart = n.subscribe("/agent_2/agent_feedback",10, &Planner::setStart,this);
+    }
+    // my_callback_queue.callOne(ros::WallDuration(0));
     // service = n.advertiseService("get_plan",&Planner::get_plan,this);
-
-    ros::spinOnce();
+    // my_callback_queue.callOne(ros::WallDuration(0));
+    // ros::spinOnce();
 };
 
 bool Planner::get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltime::GetPlan::Response &res){
 //    Planner planner(req.agent_name, req.goal);
     Planner::plan();
     res.path = Planner::get_path();
-    ros::spin();
+    // ros::spin();
     return true;
 }
 
-void Planner::setMap(const nav_msgs::OccupancyGrid map){
-    grid = map;
+void Planner::setMap(const nav_msgs::OccupancyGrid::ConstPtr& map){
+    grid = *map;
 }
 
-void Planner::setStart(const geometry_msgs::PoseStamped current_position){
-    start = current_position;
+void Planner::setStart(const geometry_msgs::PoseStamped::ConstPtr& current_position){
+    start = *current_position;
 }
 
 nav_msgs::Path Planner::call_service(std::string name, geometry_msgs::PoseStamped point){
@@ -56,10 +59,16 @@ nav_msgs::Path Planner::call_service(std::string name, geometry_msgs::PoseStampe
 }
 
 void Planner::plan(){
-     int width = grid.info.width;
-     int height = grid.info.height;
-//    int width =10;
-//    int height =10;
+    //  int width = grid.info.width;
+    //  int height = grid.info.height;
+    int width =10;
+    int height =10;
+    if (grid.info.width!=0){
+        width = grid.info.width;
+    }
+    if (grid.info.height!=0){
+        height = grid.info.height;
+    }
     Node3D* nodes3D = new Node3D[width*height]();
 
     // retrieving goal position
@@ -71,6 +80,12 @@ void Planner::plan(){
     // retrieving start position
     x = start.pose.position.x ;
     y = start.pose.position.y ;
+    // if (x==0){
+    //     x = grid.info.width;
+    // }
+    // if (y==0){
+    //     height = grid.info.height;
+    // }
     Node3D nStart(x, y, 0, 0, 0, nullptr);
      // check if start and goal exist in the path dict
      if (path.check_path(nStart, nGoal)) {

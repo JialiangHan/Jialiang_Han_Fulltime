@@ -104,4 +104,8 @@ add_executable(test_path src/test_path.cpp ${HEADERS} ${SOURCES})
 add_dependencies(test_path ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(test_path ${catkin_LIBRARIES})
 
+add_executable(test_planner src/test_planner.cpp ${HEADERS} ${SOURCES})
+add_dependencies(test_planner ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_planner ${catkin_LIBRARIES})
+
 SET(CMAKE_BUILD_TYPE Debug)

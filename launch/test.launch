@@ -1,6 +1,6 @@
 <!-- -*- mode: XML -*- -->
 <launch>
- <!-- ################ grid_map ################
+    ################ grid_map ################
     <node pkg="jialiang_han_fulltime" name="grid_map" type="grid_map"/>
 
     ################ start agent node 1 ################
@@ -10,9 +10,9 @@
         <param name="theta" type="int" value="0"/>
     </node>
     
-    <node pkg="jialiang_han_fulltime" type="get_plan_server" name="get_plan_server"/>
+    <!-- <node pkg="jialiang_han_fulltime" type="get_plan_server" name="get_plan_server"/> -->
 
-    <node pkg="jialiang_han_fulltime" type="get_plan_client" name="get_plan_client" args="agent_1 2 5 0"/> -->
+    <!-- <node pkg="jialiang_han_fulltime" type="get_plan_client" name="get_plan_client" args="agent_1 2 5 0"/>  -->
 
-    <node pkg="jialiang_han_fulltime" name="test_path" type="test_path"/>
+    <node pkg="jialiang_han_fulltime" name="test_planner" type="test_planner"/>
 </launch>

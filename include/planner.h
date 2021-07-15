@@ -24,13 +24,10 @@ class Planner {
 
 
   // a callback function to set map size
-  void setMap(const nav_msgs::OccupancyGrid map);
+  void setMap(const nav_msgs::OccupancyGrid::ConstPtr& map);
 
   // a callback function to set start node
-  void setStart(const geometry_msgs::PoseStamped start);
-
-  // a callback function to set goal node
-  void setGoal(const geometry_msgs::PoseStamped goal);
+  void setStart(const geometry_msgs::PoseStamped::ConstPtr& start);
 
   // main path planning function
   void plan();
@@ -52,7 +49,7 @@ class Planner {
   /// A subscriber for receiving start updates: current position of agent
   ros::Subscriber subStart;
   /// A publisher for publish path to rviz
-  ros::Publisher path_pub;
+  // ros::Publisher path_pub;
   /// A pointer to the grid the planner runs on
   nav_msgs::OccupancyGrid grid;
   /// The start pose set through RViz
