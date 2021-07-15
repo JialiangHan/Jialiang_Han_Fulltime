@@ -87,7 +87,7 @@ void Planner::plan(){
         // trace its parent and put it into a path list(vector)
         astar.trace_path(solution);
         path.update_path(astar.get_path());
-        path.publishPath();
+        // path.publishPath();
      }
     delete [] nodes3D;
 }

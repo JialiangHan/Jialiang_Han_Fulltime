@@ -15,8 +15,10 @@ int main(int argc, char **argv)
   ros::Publisher path_pub = n.advertise<nav_msgs::Path>("path",1);
   client.call(srv);
   // ros::service::call("get_plan",srv);
-  path_pub.publish(srv.response.path);
-  ros::spin();
+  nav_msgs::Path path = srv.response.path;
+  while (ros::ok()){
+    path_pub.publish(path);
+    ros::spinOnce();
+  }
   return 0;
-
 }
