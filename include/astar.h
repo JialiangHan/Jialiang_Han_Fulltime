@@ -1,8 +1,10 @@
 #ifndef ASTAR_H
 #define ASTAR_H
 
-#include "node_3d.h"
 #include <vector>
+
+#include "node_3d.h"
+#include "collision_check.h"
 
 using namespace std;
 
@@ -24,7 +26,7 @@ public:
     //param goal: goal position
     //parm nodes3D: array of node 3D
     //width and height are from map info
-    static Node3D* path_planner(Node3D& start, const Node3D& goal, Node3D* nodes3D, int width, int height);
+    static Node3D* path_planner(Node3D& start, const Node3D& goal, Node3D* nodes3D, CollisionDetection& configurationSpace, int width, int height);
     // trace path from goal, put all its parents into path
     void trace_path(const Node3D* goal, vector<Node3D> path=vector<Node3D>());
     const vector<Node3D>& get_path(){return path;}

@@ -4,7 +4,7 @@
 
 namespace planner{
 
-Node3D* Astar::path_planner(Node3D& start, const Node3D& goal,Node3D* nodes3D, int width,int height){
+Node3D* Astar::path_planner(Node3D& start, const Node3D& goal,Node3D* nodes3D, CollisionDetection& configurationSpace,int width,int height){
     // set index of predecessor and successor
     int index_predecessor, index_successor;
     float new_cost_so_far;
@@ -52,8 +52,8 @@ Node3D* Astar::path_planner(Node3D& start, const Node3D& goal,Node3D* nodes3D, i
                     successor = current_node->create_successor(i);
                     // set index of successor
                     index_successor = successor->set_index(width);
-                    // make sure successor is on the grid map
-                    if (successor->is_on_grid(width,height)){
+                    // make sure successor is on the grid map and is not obstacle
+                    if (successor->is_on_grid(width,height) && configurationSpace.isTraversable(nSucc) ){
                         // make sure successor is not in close list or has the same index as predecessor
                         if (!nodes3D[index_successor].is_closed() || index_predecessor ==index_successor ){
                             // update cost so far
