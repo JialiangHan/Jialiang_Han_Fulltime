@@ -18,13 +18,16 @@ Planner::Planner (std::string agent_name, geometry_msgs::PoseStamped end) {
     // subscribe map info
     subMap = n.subscribe("/grid_map",1, &Planner::setMap, this);
     // my_callback_queue.callOne(ros::WallDuration(0));
+    string topic_name;
     if (agent_name == "agent_1"){
-        subStart = n.subscribe("/agent_1/agent_feedback",10, &Planner::setStart,this);
+        topic_name = "/agent_1/agent_feedback"
     }
     if (agent_name == "agent_2"){
-        subStart = n.subscribe("/agent_2/agent_feedback",10, &Planner::setStart,this);
+        topic_name = "/agent_2/agent_feedback"
     }
+    subStart = n.subscribe(topic_name,10, &Planner::setStart,this);
     // my_callback_queue.callOne(ros::WallDuration(0));
+    // set server for get_plan service
     service = n.advertiseService("get_plan",&Planner::get_plan,this);
     // my_callback_queue.callOne(ros::WallDuration(0));
     // ros::spinOnce();
@@ -47,6 +50,7 @@ void Planner::setStart(const geometry_msgs::PoseStamped::ConstPtr& current_posit
 }
 
 nav_msgs::Path Planner::call_service(std::string name, geometry_msgs::PoseStamped point){
+    // todo: here client and server are on the same Nodehandle, maybe a correction is to create a new Nodehandle for client
     client = n.serviceClient<jialiang_han_fulltime::GetPlan>("get_plan");
     jialiang_han_fulltime::GetPlan srv;
     srv.request.agent_name = name;
