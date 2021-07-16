@@ -25,12 +25,15 @@ int main(int argc, char **argv){
     // nav_path = plan.get_path();
     ros::Publisher path_pub = nh.advertise<nav_msgs::Path>("path",1);
     // ROS_INFO()
+    ros::Rate loop_rate(1);
+
     while(ros::ok()){
         plan.plan();
         nav_path = plan.get_path();
         path_pub.publish(nav_path);
         // path_pub.publish(pl.get_path());
         ros::spinOnce();
+        loop_rate.sleep();
     }
     // this function is a must or spinOnce;
     // ros::spin();
