@@ -32,7 +32,7 @@ class Planner {
   // main path planning function
   void plan();
   // return path in nav::msgs/path format
-  nav_msgs::Path get_path(){ return path.get_path();}
+  nav_msgs::Path get_path() { return path.get_path();}
   /// function for service get plan
   bool get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltime::GetPlan::Response &res);
   /// this function call get plan service
@@ -48,8 +48,6 @@ class Planner {
   ros::Subscriber subMap;
   /// A subscriber for receiving start updates: current position of agent
   ros::Subscriber subStart;
-  /// A publisher for publish path to rviz
-  // ros::Publisher path_pub;
   /// A pointer to the grid the planner runs on
   nav_msgs::OccupancyGrid grid;
   /// The start pose set through RViz
