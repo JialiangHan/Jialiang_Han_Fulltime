@@ -58,6 +58,7 @@ class Planner {
   std::string agent_name;
   Path path;
   Astar astar;
+  CollisionDetection configurationSpace;
 };
 }
 #endif // PLANNER_H
