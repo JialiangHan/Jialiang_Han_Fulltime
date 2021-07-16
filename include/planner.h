@@ -34,6 +34,8 @@ class Planner {
   void plan();
   // return path in nav::msgs/path format
   nav_msgs::Path get_path() { return path.get_path();}
+  // set get plan server
+  void set_get_plan_server();
   /// function for service get plan
   bool get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltime::GetPlan::Response &res);
   /// this function call get plan service
@@ -42,6 +44,8 @@ class Planner {
  private:
   /// The node handle
   ros::NodeHandle n;
+  // node handle for client
+  ros::NodeHandle nh;
   /// A service server to get plan
   ros::ServiceServer service;
   ros::ServiceClient client;
