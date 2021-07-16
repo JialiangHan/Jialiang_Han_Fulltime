@@ -27,6 +27,6 @@
     <!-- ################ start update goal client for agent_2 ################
     <node pkg="jialiang_han_fulltime" type="update_goal_client" name="update_goal_client_2" args="agent_2 6 3 0"/> -->
 <!--    ################ start update goal client for agent_1 ################-->
-<!--    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find jialiang_han_fulltime)/rviz/rviz.rviz" />-->
+   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find jialiang_han_fulltime)/rviz/rviz.rviz" />
 
 </launch>
