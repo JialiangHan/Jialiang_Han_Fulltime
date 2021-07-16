@@ -10,7 +10,7 @@ int main(int argc, char **argv){
 
     ros::init(argc, argv, "test_planner");
 
-    ros::NodeHandle nh;
+    ros::NodeHandle nh("~");
     
     geometry_msgs::PoseStamped goal;
     goal.pose.position.x = 8;
@@ -25,14 +25,14 @@ int main(int argc, char **argv){
     // nav_path = plan.get_path();
     ros::Publisher path_pub = nh.advertise<nav_msgs::Path>("path",1);
     // ROS_INFO()
-    ros::Rate loop_rate(1);
+    ros::Rate loop_rate(10);
 
     while(ros::ok()){
+        ros::spinOnce();
         plan.plan();
         nav_path = plan.get_path();
         path_pub.publish(nav_path);
         // path_pub.publish(pl.get_path());
-        ros::spinOnce();
         loop_rate.sleep();
     }
     // this function is a must or spinOnce;

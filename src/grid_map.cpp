@@ -59,10 +59,13 @@ int main(int argc,char **argv){
     int p[map.info.width*map.info.height] = {0}; //value here should be [0,100] is the probality
     std::vector<signed char> a(p,p+100);
     map.data = a;
+
+    ros::Rate loop_rate(10);
+
     while(ros::ok()){
         pub.publish(map);
-        
         ros::spinOnce();
+        loop_rate.sleep();
     }
 
 

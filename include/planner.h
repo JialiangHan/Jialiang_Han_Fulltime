@@ -9,6 +9,7 @@
 #include "astar.h"
 #include "node_3d.h"
 #include "path.h"
+#include "collision_check.h"
 
 namespace planner {
 

@@ -4,6 +4,7 @@
 
 #include "astar.h"
 #include "path.h"
+#include "collision_check.h"
 
 using namespace planner;
 
@@ -26,10 +27,22 @@ int main(int argc, char **argv){
     Node3D nStart(x, y, 0, 0, 0, nullptr);
     // CLEAR THE PATH
     Astar astar;
-    // find goal node
-    Node3D* solution = astar.path_planner(nStart,nGoal,nodes3D, width,height);
+    // nav_msgs::OccupancyGrid map;
+    // map.header.frame_id = "planner";
+    // map.header.stamp = ros::Time::now();
+    // map.info.resolution = 1; // unit is meter
+    // map.info.width = 10; //unit is meter
+    // map.info.height = 10; //unit is meter
+    // int p[map.info.width*map.info.height] = {0}; //value here should be [0,100] is the probality
+    // std::vector<signed char> a(p,p+100);
+    // map.data = a;
+
+    // CollisionDetection configuration;
+    // configuration.updateGrid(map);
+    // // find goal node
+    // Node3D* solution = astar.path_planner(nStart,nGoal,nodes3D, configuration, width,height);
     // trace its parent and put it into a path list(vector)
-    astar.trace_path(solution);
+    // astar.trace_path(solution);
     vector<Node3D> path;
     path = astar.get_path();
     delete [] nodes3D;

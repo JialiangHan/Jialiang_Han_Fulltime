@@ -3,7 +3,7 @@
 // subscrible grid map to get map info
 // service client: get_plan
 #include <ros/ros.h>
-#include <ros/callback_queue.h>
+// #include <ros/callback_queue.h>
 #include "planner.h"
 #include <iostream>
 #include <string>
@@ -16,22 +16,29 @@ Planner::Planner (std::string agent_name, geometry_msgs::PoseStamped end) {
     // ros::CallbackQueue my_callback_queue;
     // n.setCallbackQueue(&my_callback_queue);
     // subscribe map info
-    subMap = n.subscribe("/grid_map",1, &Planner::setMap, this);
+    subMap = n.subscribe("/grid_map", 500, &Planner::setMap, this);
     // my_callback_queue.callOne(ros::WallDuration(0));
     string topic_name;
     if (agent_name == "agent_1"){
-        topic_name = "/agent_1/agent_feedback"
+        topic_name = "/agent_1/agent_feedback";
     }
     if (agent_name == "agent_2"){
-        topic_name = "/agent_2/agent_feedback"
+        topic_name = "/agent_2/agent_feedback";
     }
-    subStart = n.subscribe(topic_name,10, &Planner::setStart,this);
+    subStart = n.subscribe(topic_name, 500, &Planner::setStart,this);
     // my_callback_queue.callOne(ros::WallDuration(0));
     // set server for get_plan service
     // todo: maybe i can set another function to set service server
-    service = n.advertiseService("get_plan",&Planner::get_plan,this);
+    // service = n.advertiseService("get_plan",&Planner::get_plan,this);
     // my_callback_queue.callOne(ros::WallDuration(0));
     // ros::spinOnce();
+    ros::Rate loop_rate(10);
+    int i =0;
+    while(ros::ok()&& i<=5){
+        ros::spinOnce();
+        loop_rate.sleep();
+        i++;
+    }
 };
 
 bool Planner::get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltime::GetPlan::Response &res){

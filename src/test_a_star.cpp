@@ -28,9 +28,9 @@ int main(int argc, char **argv){
     // CLEAR THE PATH
     Astar astar;
     // find goal node
-    Node3D* solution = astar.path_planner(nStart,nGoal,nodes3D, width,height);
+    // Node3D* solution = astar.path_planner(nStart,nGoal,nodes3D, width,height);
     // trace its parent and put it into a path list(vector)
-    astar.trace_path(solution);
+    // astar.trace_path(solution);
     vector<Node3D> path;
     path = astar.get_path();
     // path.publishPath();

@@ -53,7 +53,7 @@ Node3D* Astar::path_planner(Node3D& start, const Node3D& goal,Node3D* nodes3D, C
                     // set index of successor
                     index_successor = successor->set_index(width);
                     // make sure successor is on the grid map and is not obstacle
-                    if (successor->is_on_grid(width,height) && configurationSpace.isTraversable(nSucc) ){
+                    if (successor->is_on_grid(width,height) && configurationSpace.isTraversable(successor) ){
                         // make sure successor is not in close list or has the same index as predecessor
                         if (!nodes3D[index_successor].is_closed() || index_predecessor ==index_successor ){
                             // update cost so far
