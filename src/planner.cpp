@@ -26,10 +26,7 @@ Planner::Planner (std::string agent_name, geometry_msgs::PoseStamped end) {
         topic_name = "/agent_2/agent_feedback";
     }
     subStart = n.subscribe(topic_name, 500, &Planner::setStart,this);
-    // my_callback_queue.callOne(ros::WallDuration(0));
-    // set server for get_plan service
-    // todo: maybe i can set another function to set service server
-    // service = n.advertiseService("get_plan",&Planner::get_plan,this);
+    
     // my_callback_queue.callOne(ros::WallDuration(0));
     // ros::spinOnce();
     ros::Rate loop_rate(10);
@@ -49,6 +46,12 @@ bool Planner::get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_ha
     return true;
 }
 
+void Planner::set_get_plan_server(){
+    // set server for get_plan service
+    service = n.advertiseService("get_plan",&Planner::get_plan,this);
+    ros::spin();
+}
+
 void Planner::setMap(const nav_msgs::OccupancyGrid::ConstPtr& map){
     grid = *map;
     configurationSpace.updateGrid(map);
@@ -60,7 +63,7 @@ void Planner::setStart(const geometry_msgs::PoseStamped::ConstPtr& current_posit
 
 nav_msgs::Path Planner::call_service(std::string name, geometry_msgs::PoseStamped point){
     // todo: here client and server are on the same Nodehandle, maybe a correction is to create a new Nodehandle for client
-    client = n.serviceClient<jialiang_han_fulltime::GetPlan>("get_plan");
+    client = nh.serviceClient<jialiang_han_fulltime::GetPlan>("get_plan");
     jialiang_han_fulltime::GetPlan srv;
     srv.request.agent_name = name;
     srv.request.goal = point;

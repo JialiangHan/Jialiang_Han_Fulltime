@@ -10,7 +10,7 @@ int main(int argc, char **argv){
 
     ros::init(argc, argv, "test_get_plan");
 
-    ros::NodeHandle nh;
+    ros::NodeHandle nh("~");
 
     geometry_msgs::PoseStamped goal;
     goal.pose.position.x = 8;

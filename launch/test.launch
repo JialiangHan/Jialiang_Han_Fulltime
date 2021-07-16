@@ -10,5 +10,8 @@
         <param name="theta" type="int" value="0"/>
     </node>
     
-    <node pkg="jialiang_han_fulltime" name="test_get_plan" type="test_get_plan"/>
+    <node pkg="jialiang_han_fulltime" name="get_plan_server" type="get_plan_server"/>
+
+    <node pkg="jialiang_han_fulltime" type="get_plan_client" name="get_plan_client" args="agent_1 2 5 0"/> 
+
 </launch>
