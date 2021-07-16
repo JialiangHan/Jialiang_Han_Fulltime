@@ -13,10 +13,15 @@ int main(int argc, char **argv)
   srv.request.goal.pose.position.y = atoi(argv[3]);
   srv.request.goal.pose.position.z = atoi(argv[4]);
   ros::Publisher path_pub = n.advertise<nav_msgs::Path>("path",1);
-  // client.call(srv);
-  ros::service::call("update_goal",srv);
-  path_pub.publish(srv.response.path);
-
+  client.call(srv);
+//  ros::service::call("update_goal",srv);
+  ros::Rate loop_rate(1);
+  nav_msgs::Path path = srv.response.path;
+  while (ros::ok()){
+    path_pub.publish(path);
+    ros::spinOnce();
+    loop_rate.sleep();
+  }
   return 0;
 
 }
