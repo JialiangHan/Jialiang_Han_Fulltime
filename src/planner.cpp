@@ -28,6 +28,7 @@ Planner::Planner (std::string agent_name, geometry_msgs::PoseStamped end) {
     subStart = n.subscribe(topic_name,10, &Planner::setStart,this);
     // my_callback_queue.callOne(ros::WallDuration(0));
     // set server for get_plan service
+    // todo: maybe i can set another function to set service server
     service = n.advertiseService("get_plan",&Planner::get_plan,this);
     // my_callback_queue.callOne(ros::WallDuration(0));
     // ros::spinOnce();
@@ -43,6 +44,7 @@ bool Planner::get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_ha
 
 void Planner::setMap(const nav_msgs::OccupancyGrid::ConstPtr& map){
     grid = *map;
+    configurationSpace.updateGrid(map);
 }
 
 void Planner::setStart(const geometry_msgs::PoseStamped::ConstPtr& current_position){
@@ -73,7 +75,7 @@ void Planner::plan(){
     if (grid.info.height!=0){
         height = grid.info.height;
     }
-    Node3D* nodes3D = new Node3D[width*height]();
+    Node3D* nodes3D = new Node3D[width * height]();
 
     // retrieving goal position
     int x = goal.pose.position.x ;
@@ -102,7 +104,7 @@ void Planner::plan(){
         // CLEAR THE PATH
         path.clear();
         // find goal node
-        Node3D* solution = astar.path_planner(nStart,nGoal,nodes3D, width,height);
+        Node3D* solution = astar.path_planner(nStart,nGoal,nodes3D, configurationSpace, width,height);
         // trace its parent and put it into a path list(vector)
         astar.trace_path(solution);
         path.update_path(astar.get_path());
