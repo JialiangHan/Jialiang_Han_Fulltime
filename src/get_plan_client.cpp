@@ -15,7 +15,6 @@ int main(int argc, char **argv)
   ros::Publisher path_pub = n.advertise<nav_msgs::Path>("path",1);
   client.call(srv);
   ros::Rate loop_rate(1);
-  // ros::service::call("get_plan",srv);
   nav_msgs::Path path = srv.response.path;
   while (ros::ok()){
     path_pub.publish(path);
