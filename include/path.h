@@ -18,14 +18,16 @@
 
 using namespace std;
 
-namespace planner {
-
-class Path {
- public:
+namespace planner
+{
+class Path
+{
+public:
   /// The default constructor initializing the path object and setting publishers for the same.
-  Path() {
+  Path()
+  {
     std::string pathTopic = "/path";
-    
+
     // TOPICS TO PUBLISH
     // pubPath = n.advertise<nav_msgs::Path>(pathTopic, 1);
 
@@ -38,18 +40,21 @@ class Path {
   void get_path_from_dict(Node3D& start, const Node3D& goal);
   void update_path_dict();
   // transfer path from vector form into a nav_msgs path
-  void update_path(const std::vector<Node3D> &nodePath);
+  void update_path(const std::vector<Node3D>& nodePath);
   // add node to nav::msgs/Path
   void addSegment(const Node3D& node);
   /// return path got from astar
-  nav_msgs::Path get_path() {return path;}
+  nav_msgs::Path get_path()
+  {
+    return path;
+  }
 
   /// Clears the path
   void clear();
   /// Publishes the path
   // void publishPath() { pubPath.publish(path); }
 
- private:
+private:
   /// A handle to the ROS node
   ros::NodeHandle n;
   /// Publisher for the path as a spline
@@ -59,7 +64,6 @@ class Path {
   unordered_map<Key, vector<Node3D>, KeyHasher> path_dict;
   /// a vector contains path lits
   vector<Node3D> path_list;
-
 };
-}
-#endif // PATH_H
+}  // namespace planner
+#endif  // PATH_H
