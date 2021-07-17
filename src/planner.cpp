@@ -26,7 +26,7 @@ Planner::Planner (std::string agent_name, geometry_msgs::PoseStamped end) {
         topic_name = "/agent_2/agent_feedback";
     }
     subStart = n.subscribe(topic_name, 500, &Planner::setStart,this);
-    
+    // service = n.advertiseService("get_plan",&Planner::get_plan,this);
     // my_callback_queue.callOne(ros::WallDuration(0));
     // ros::spinOnce();
     ros::Rate loop_rate(10);
@@ -67,11 +67,9 @@ nav_msgs::Path Planner::call_service(std::string name, geometry_msgs::PoseStampe
     jialiang_han_fulltime::GetPlan srv;
     srv.request.agent_name = name;
     srv.request.goal = point;
+    // call service works. 
     client.call(srv);
-    // ros::service::call("get_plan",srv);
     return srv.response.path;
-    // }
-    // else{return path.get_path();}
 }
 
 void Planner::plan(){
