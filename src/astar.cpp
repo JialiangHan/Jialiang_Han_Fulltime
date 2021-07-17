@@ -1,4 +1,3 @@
-#include "node_3d.h"
 #include "astar.h"
 #include <queue>
 

@@ -10,7 +10,6 @@ void Path::clear()
 {
   Node3D node;
   path.poses.clear();
-  // publishPath();
 }
 
 // __________

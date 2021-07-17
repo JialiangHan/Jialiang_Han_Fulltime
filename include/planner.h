@@ -7,7 +7,6 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <jialiang_han_fulltime/GetPlan.h>
 #include "astar.h"
-#include "node_3d.h"
 #include "path.h"
 #include "collision_check.h"
 
@@ -19,10 +18,6 @@ public:
   /// The default constructor
   // Planner();
   Planner(std::string agent_name, geometry_msgs::PoseStamped goal);
-  // {
-  //     this->agent_name=agent_name;
-  //     this->goal = goal;
-  // };
 
   // a callback function to set map size
   void setMap(const nav_msgs::OccupancyGrid::ConstPtr& map);
@@ -49,8 +44,6 @@ private:
   ros::NodeHandle n;
   // node handle for client
   ros::NodeHandle nh;
-  /// A service server to get plan
-  ros::ServiceServer service;
   ros::ServiceClient client;
   /// A subscriber for receiving map updates
   ros::Subscriber subMap;

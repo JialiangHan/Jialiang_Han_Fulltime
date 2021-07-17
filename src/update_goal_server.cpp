@@ -11,7 +11,6 @@ using namespace planner;
 bool update_goal(jialiang_han_fulltime::UpdateGoal::Request& req, jialiang_han_fulltime::UpdateGoal::Response& res)
 {
   Planner astar(req.agent_name, req.goal);
-  // astar.set_get_plan_server();
   res.path = astar.call_service(req.agent_name, req.goal);
   return true;
 }

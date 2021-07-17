@@ -10,9 +10,7 @@ using namespace planner;
 bool get_plan(jialiang_han_fulltime::GetPlan::Request& req, jialiang_han_fulltime::GetPlan::Response& res)
 {
   Planner astar(req.agent_name, req.goal);
-  // ros::Rate loop_rate(1);
   astar.plan();
-  // ros::spinOnce();
   res.path = astar.get_path();
   return true;
 }
