@@ -24,22 +24,19 @@ class Planner {
 
 
   // a callback function to set map size
-  void setMap(const nav_msgs::OccupancyGrid::Ptr map);
+  void setMap(const nav_msgs::OccupancyGrid::ConstPtr& map);
 
   // a callback function to set start node
   void setStart(const geometry_msgs::PoseStamped::ConstPtr& start);
 
-  // a callback function to set goal node
-  void setGoal(const geometry_msgs::PoseStamped::ConstPtr& goal);
-
   // main path planning function
   void plan();
   // return path in nav::msgs/path format
-  nav_msgs::Path get_path(){ return path.get_path();}
+  nav_msgs::Path get_path() { return path.get_path();}
   /// function for service get plan
   bool get_plan(jialiang_han_fulltime::GetPlan::Request &req, jialiang_han_fulltime::GetPlan::Response &res);
   /// this function call get plan service
-  nav_msgs::Path call_service();
+  nav_msgs::Path call_service(std::string name, geometry_msgs::PoseStamped point);
 
  private:
   /// The node handle
@@ -51,10 +48,8 @@ class Planner {
   ros::Subscriber subMap;
   /// A subscriber for receiving start updates: current position of agent
   ros::Subscriber subStart;
-  /// A publisher for publish path to rviz
-  ros::Publisher path_pub;
   /// A pointer to the grid the planner runs on
-  nav_msgs::OccupancyGrid::Ptr grid;
+  nav_msgs::OccupancyGrid grid;
   /// The start pose set through RViz
   geometry_msgs::PoseStamped start;
   /// The goal pose set through RViz
@@ -63,6 +58,7 @@ class Planner {
   std::string agent_name;
   Path path;
   Astar astar;
+  CollisionDetection configurationSpace;
 };
 }
 #endif // PLANNER_H

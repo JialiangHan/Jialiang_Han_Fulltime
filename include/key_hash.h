@@ -7,7 +7,7 @@ namespace planner{
     struct Key
     {
       Node3D& start;
-      Node3D& goal;
+      const Node3D& goal;
 
       bool operator==(const Key &other) const
       { return (start == other.start
@@ -22,12 +22,12 @@ namespace planner{
         using std::size_t;
         using std::hash;
 
-        size_t h1 = hash<int>()(k.start.x);
-        size_t h2 = hash<int>()(k.start.y);
-        size_t h3 = hash<int>()(k.start.theta);
-        size_t h4 = hash<int>()(k.goal.x);
-        size_t h5 = hash<int>()(k.goal.y);
-        size_t h6 = hash<int>()(k.goal.theta);
+        size_t h1 = hash<int>()(k.start.get_x());
+        size_t h2 = hash<int>()(k.start.get_y());
+        size_t h3 = hash<int>()(k.start.get_theta());
+        size_t h4 = hash<int>()(k.goal.get_x());
+        size_t h5 = hash<int>()(k.goal.get_y());
+        size_t h6 = hash<int>()(k.goal.get_theta());
         size_t res = 17;
         res = res *31 + h1;
         res = res *31 + h2;

@@ -27,7 +27,7 @@ class Path {
     std::string pathTopic = "/path";
     
     // TOPICS TO PUBLISH
-    pubPath = n.advertise<nav_msgs::Path>(pathTopic, 1);
+    // pubPath = n.advertise<nav_msgs::Path>(pathTopic, 1);
 
     // CONFIGURE THE CONTAINER
     path.header.frame_id = "planner";
@@ -47,13 +47,13 @@ class Path {
   /// Clears the path
   void clear();
   /// Publishes the path
-  void publishPath() { pubPath.publish(path); }
+  // void publishPath() { pubPath.publish(path); }
 
  private:
   /// A handle to the ROS node
   ros::NodeHandle n;
   /// Publisher for the path as a spline
-  ros::Publisher pubPath;
+  // ros::Publisher pubPath;
   nav_msgs::Path path;
   /// a dict to store path
   unordered_map<Key, vector<Node3D>, KeyHasher> path_dict;

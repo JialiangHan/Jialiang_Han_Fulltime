@@ -80,6 +80,10 @@ add_executable(get_plan_server src/get_plan_server.cpp ${HEADERS} ${SOURCES})
 target_link_libraries(get_plan_server ${catkin_LIBRARIES})
 add_dependencies(get_plan_server jialiang_han_fulltime_gencpp)
 
+add_executable(get_plan_client src/get_plan_client.cpp)
+target_link_libraries(get_plan_client ${catkin_LIBRARIES})
+add_dependencies(get_plan_client jialiang_han_fulltime_gencpp)
+
 add_executable(grid_map src/grid_map.cpp )
 add_dependencies(grid_map ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(grid_map ${catkin_LIBRARIES})
@@ -95,5 +99,17 @@ add_dependencies(update_goal_client jialiang_han_fulltime_gencpp)
 add_executable(test_a_star src/test_a_star.cpp ${HEADERS} ${SOURCES})
 add_dependencies(test_a_star ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(test_a_star ${catkin_LIBRARIES})
+
+add_executable(test_path src/test_path.cpp ${HEADERS} ${SOURCES})
+add_dependencies(test_path ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_path ${catkin_LIBRARIES})
+
+add_executable(test_planner src/test_planner.cpp ${HEADERS} ${SOURCES})
+add_dependencies(test_planner ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_planner ${catkin_LIBRARIES})
+
+add_executable(test_get_plan src/test_get_plan.cpp ${HEADERS} ${SOURCES})
+add_dependencies(test_get_plan ${${PORJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_get_plan ${catkin_LIBRARIES})
 
 SET(CMAKE_BUILD_TYPE Debug)

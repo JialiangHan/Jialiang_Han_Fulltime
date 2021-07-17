@@ -10,7 +10,7 @@ using namespace planner;
 void Path::clear() {
   Node3D node;
   path.poses.clear();
-  publishPath();
+  // publishPath();
 }
 
 // __________
