@@ -10,9 +10,14 @@
         <param name="theta" type="int" value="0"/>
     </node>
     
-    <node pkg="jialiang_han_fulltime" type="get_plan_server" name="get_plan_server"/>
+    <node pkg="jialiang_han_fulltime" name="get_plan_server" type="get_plan_server"/>
 
-    <node pkg="jialiang_han_fulltime" type="get_plan_client" name="get_plan_client" args="agent_1 2 5 0"/> 
+    <!-- <node pkg="jialiang_han_fulltime" type="get_plan_client" name="get_plan_client" args="agent_1 2 5 0"/>   -->
 
-    <!-- <node pkg="jialiang_han_fulltime" name="test_planner" type="test_planner"/> -->
+    <node pkg="jialiang_han_fulltime" name="update_goal_server" type="update_goal_server"/>
+
+    <node pkg="jialiang_han_fulltime" name="test_planner" type="test_planner"/>
+
+    <!-- <node pkg="jialiang_han_fulltime" type="update_goal_client" name="update_goal_client" args="agent_1 2 5 0"/>  -->
+   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find jialiang_han_fulltime)/rviz/rviz.rviz" />
 </launch>

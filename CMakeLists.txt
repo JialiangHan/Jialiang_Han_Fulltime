@@ -18,6 +18,7 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/node_3d.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/planner.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/path.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/collision_check.cpp
     )
 set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/astar.h
@@ -25,6 +26,7 @@ set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/planner.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/path.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/key_hash.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/collision_check.h
     )
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)

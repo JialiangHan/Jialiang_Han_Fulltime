@@ -13,3 +13,7 @@ mkdir -p ~/catkin_ws/src \
 && catkin_make \
 && source devel/setup.bash \
 && roslaunch jialiang_han_fulltime launch.launch
+
+issue remaining:
+1. if my understanding is correct, update goal server should be set in agent node. but this will cause issue if we start two agent node. so server should be set seperately.
+2. get plan server should be set in planner node. but issue comes up, if i add server in planner, i also should add ros::spin in that. if so, i can never get out of spin.
