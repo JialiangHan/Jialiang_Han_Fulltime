@@ -2,13 +2,13 @@
 <package format="2">
     <name>jialiang_han_fulltime</name>
     <version>0.0.0</version>
-    <description>The Jialiang_Han_Fulltime package</description>
+    <description>The jialiang_han_fulltime package</description>
 
     <maintainer email="jialiang@outlook.com">jialiang</maintainer>
 
     <license>TODO</license>
 
-    <url type="website">https://github.com/JialiangHan/Jialiang_Han_Fulltime</url>
+    <url type="website">https://github.com/JialiangHan/jialiang_han_fulltime</url>
 
     <buildtool_depend>catkin</buildtool_depend>
     <build_depend>geometry_msgs</build_depend>

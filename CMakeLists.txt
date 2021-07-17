@@ -58,7 +58,7 @@ add_service_files(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES Jialiang_Han_Fulltime
+  LIBRARIES jialiang_han_fulltime
   CATKIN_DEPENDS geometry_msgs nav_msgs roscpp message_runtime
   DEPENDS system_lib
 )
