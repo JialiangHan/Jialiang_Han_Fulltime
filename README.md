@@ -8,7 +8,7 @@ Run the following command to clone, build, and launch the package (requires a so
 
 mkdir -p ~/catkin_ws/src \
 && cd ~/catkin_ws/src \
-&& git clone https://github.com/JialiangHan/Jialiang_Han_Fulltime.git \
+&& git clone https://github.com/JialiangHan/jialiang_han_fulltime.git \
 && cd .. \
 && catkin_make \
 && source devel/setup.bash \
